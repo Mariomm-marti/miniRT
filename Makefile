@@ -6,7 +6,7 @@
 #    By: mmartin- <mmartin-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/01/10 15:21:05 by mmartin-          #+#    #+#              #
-#    Updated: 2020/09/01 18:59:28 by mmartin-         ###   ########.fr        #
+#    Updated: 2020/09/02 17:33:40 by mmartin-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -46,6 +46,10 @@ clean:
 					@rm -f $(MINIRT_OUT)/libftprintf.a
 
 fclean:			clean
+					$(call MINIRT_MSG,"Cleaning dependencies objects...")
+					@make -s -C $(MINIRT_LIBFT) fclean
+					@make -s -C $(MINIRT_GNL) fclean
+					@make -s -C $(MINIRT_FTPTF) fclean
 					$(call MINIRT_MSG,"Deleting $(MINIRT_OUT)/$(MINIRT_NAME)...")
 					@rm -f $(MINIRT_OUT)/$(MINIRT_NAME)
 
