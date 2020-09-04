@@ -3,34 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   read_file.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmartin- <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mmartin- <mmartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/09/04 11:40:10 by mmartin-          #+#    #+#             */
-/*   Updated: 2020/09/04 14:12:54 by mmartin-         ###   ########.fr       */
+/*   Created: 2020/09/04 19:41:25 by mmartin-          #+#    #+#             */
+/*   Updated: 2020/09/04 20:43:55 by mmartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <get_next_line.h>
-#include <fctntl.h>
+#include "../includes/error_handle.h"
 
-float		readv(char *line)
+float	readv(char *ln)
 {
-	
-}
+	static int	lp = 0;
+	float		final;
+	int			decimal;
 
-t_errcode	read_file(t_conf *conf, char const *path)
-{
-	int const	fd = open(path, O_RDONLY);
-	char		*line; 
-
-	if (fd < 0)
-		return (CONF_MISSING);
-	while (get_next_line(fd, &line) == 1)
+	if ((!ft_isdigit(*(ln + lp - 1)) || !ft_isdigit(*(ln + lp + 1))) &&
+			(*(ln + lp) == ',' || *(ln + lp) == '.'))
 	{
-		// TODO Today: read each val
-		free(line);
+		// TODO error handle
+		return (0.0f);
 	}
-	if (line)
-		free(line);
-	return (close(fd) ? CONF_MISSING : 0);
+	return (final);
 }

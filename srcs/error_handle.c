@@ -6,12 +6,19 @@
 /*   By: mmartin- <mmartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/02 17:37:33 by mmartin-          #+#    #+#             */
-/*   Updated: 2020/09/04 14:12:34 by mmartin-         ###   ########.fr       */
+/*   Updated: 2020/09/04 20:43:58 by mmartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <libft.h>
 #include "../includes/error_handle.h"
+
+/*
+**	DESCRIPTION
+**		Converts every t_errcode to text and prints it
+**	ERROR SYSTEM DESCRIPTION
+**		There are 32 bit in  
+*/
 
 void	print_error(t_errcode errcod)
 {

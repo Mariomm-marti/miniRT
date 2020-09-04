@@ -6,7 +6,7 @@
 #    By: mmartin- <mmartin-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/01/10 15:21:05 by mmartin-          #+#    #+#              #
-#    Updated: 2020/09/02 17:33:40 by mmartin-         ###   ########.fr        #
+#    Updated: 2020/09/04 18:20:45 by mmartin-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,6 +20,9 @@ MINIRT_NAME	= miniRT
 MINIRT_LIBFT:= $(addprefix $(MINIRT_OUT),"/srcs/libft")
 MINIRT_GNL	:= $(addprefix $(MINIRT_OUT),"/srcs/get_next_line")
 MINIRT_FTPTF:= $(addprefix $(MINIRT_OUT),"/srcs/ft_printf")
+SCREEN_WIDTH = $(shell system_profiler SPDisplaysDataType | grep "Resolution" | cut -d" " -f12)
+SCREEN_HEIGHT = $(shell system_profiler SPDisplaysDataType | grep "Resolution" | cut -d" " -f14)
+
 
 $(MINIRT_NAME):
 					$(call MINIRT_MSG,"Attempting to compile required dependencies...")
@@ -32,6 +35,7 @@ $(MINIRT_NAME):
 						-I$(MINIRT_LIBFT)/includes \
 						-I$(MINIRT_GNL)/includes \
 						-I$(MINIRT_FTPTF)/includes \
+						-D SCREEN_WIDTH=$(SCREEN_WIDTH) -D SCREEN_HEIGHT=$(SCREEN_HEIGHT) \
 						$(MINIRT_SRCS) -o $(MINIRT_OUT)/$(MINIRT_NAME) -O3 -march=skylake
 					$(call MINIRT_MSG,"Finished compiling project!")
 

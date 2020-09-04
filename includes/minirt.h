@@ -6,12 +6,20 @@
 /*   By: mmartin- <mmartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/01 19:03:31 by mmartin-          #+#    #+#             */
-/*   Updated: 2020/09/04 11:47:34 by mmartin-         ###   ########.fr       */
+/*   Updated: 2020/09/04 18:22:03 by mmartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINIRT_H
 # define MINIRT_H
+
+#ifndef SCREEN_WIDTH
+# define SCREEN_WIDTH 1920
+#endif
+
+#ifndef SCREEN_HEIGHT
+# define SCREEN_HEIGHT 1080
+#endif
 
 typedef struct		s_vec
 {

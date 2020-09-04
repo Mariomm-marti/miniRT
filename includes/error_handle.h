@@ -6,7 +6,7 @@
 /*   By: mmartin- <mmartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/02 17:21:14 by mmartin-          #+#    #+#             */
-/*   Updated: 2020/09/04 13:55:06 by mmartin-         ###   ########.fr       */
+/*   Updated: 2020/09/04 20:25:24 by mmartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ typedef unsigned long long int	t_errcode;
 typedef enum	e_errcodes
 {
 	CONF_MISSING = 0x1BDC6DB5339A5C7ULL,
+	CONF_INV_FMT = 0x1BDC6D8824D99B4ULL,
 	CONF_INV_RES = 0x6F71B6209372ULL,
 	CONF_INV_AMB = 0x6F71B6209361ULL,
 	CONF_INV_CAM = 0x6F71B6209363ULL,
