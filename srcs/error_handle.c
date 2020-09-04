@@ -6,14 +6,14 @@
 /*   By: mmartin- <mmartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/02 17:37:33 by mmartin-          #+#    #+#             */
-/*   Updated: 2020/09/02 17:38:47 by mmartin-         ###   ########.fr       */
+/*   Updated: 2020/09/04 14:12:34 by mmartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <libft.h>
 #include "../includes/error_handle.h"
 
-void	print_error(unsigned long long int errcod)
+void	print_error(t_errcode errcod)
 {
 	char	mask;
 	char	current;

@@ -6,12 +6,14 @@
 /*   By: mmartin- <mmartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/02 17:21:14 by mmartin-          #+#    #+#             */
-/*   Updated: 2020/09/02 20:35:59 by mmartin-         ###   ########.fr       */
+/*   Updated: 2020/09/04 13:55:06 by mmartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef ERROR_HANDLE_H
 # define ERROR_HANDLE_H
+
+typedef unsigned long long int	t_errcode;
 
 typedef enum	e_errcodes
 {
@@ -27,6 +29,6 @@ typedef enum	e_errcodes
 	CONF_INV_TRIANGLE = 0xDEE36C4126E92ULL
 }				t_errcodes;
 
-void			print_error(unsigned long long int errcod);
+void			print_error(t_errcode errcod);
 
 #endif
