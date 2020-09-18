@@ -6,16 +6,20 @@
 /*   By: mmartin- <mmartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/01 18:45:05 by mmartin-          #+#    #+#             */
-/*   Updated: 2020/09/02 20:42:40 by mmartin-         ###   ########.fr       */
+/*   Updated: 2020/09/18 20:29:39 by mmartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <ft_printf.h>
-#include "../includes/error_handle.h"
+#include "../includes/minirt.h"
 
-int		main(int argc, char **argv)
+int			main(int argc, char **argv)
 {
-	if (argc > 1 || !**argv)
+	t_conf	conf;
+
+	if (argc != 2)
 		return (1);
-	print_error(CONF_MISSING);
+	ft_bzero(&conf, sizeof(t_conf));
+	print_error(read_res(&conf, &argv[1][1]));
+	printf("ERROR CODE\n\n%d\nWIDTH\n\n%d\nHEIGHT\n\n", conf.res.x, conf.res.y);
 }

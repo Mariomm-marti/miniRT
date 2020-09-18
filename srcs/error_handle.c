@@ -6,12 +6,12 @@
 /*   By: mmartin- <mmartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/02 17:37:33 by mmartin-          #+#    #+#             */
-/*   Updated: 2020/09/17 19:10:28 by mmartin-         ###   ########.fr       */
+/*   Updated: 2020/09/18 20:29:21 by mmartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <libft.h>
-#include "../includes/error_handle.h"
+#include "../includes/minirt.h"
 
 /*
 **	DESCRIPTION

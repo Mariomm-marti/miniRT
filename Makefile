@@ -6,7 +6,7 @@
 #    By: mmartin- <mmartin-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/01/10 15:21:05 by mmartin-          #+#    #+#              #
-#    Updated: 2020/09/04 18:20:45 by mmartin-         ###   ########.fr        #
+#    Updated: 2020/09/18 20:48:48 by mmartin-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,6 +38,23 @@ $(MINIRT_NAME):
 						-D SCREEN_WIDTH=$(SCREEN_WIDTH) -D SCREEN_HEIGHT=$(SCREEN_HEIGHT) \
 						$(MINIRT_SRCS) -o $(MINIRT_OUT)/$(MINIRT_NAME) -O3 -march=skylake
 					$(call MINIRT_MSG,"Finished compiling project!")
+
+debug:
+					$(call MINIRT_MSG, "⚠ Entering DEBUG mode ⚠")
+					$(call MINIRT_MSG,"Attempting to compile required dependencies...")
+					@(test ! -f $(MINIRT_OUT)/libft.a && make -s -C ../libft LIBFT_OUT=$(MINIRT_OUT)) || true
+					@(test ! -f $(MINIRT_OUT)/libgnl.a && make -s -C ../get_next_line GNL_OUT=$(MINIRT_OUT)) || true
+					@(test ! -f $(MINIRT_OUT)/libftprintf.a && make -s -C ../ft_printf FTPTF_OUT=$(MINIRT_OUT) FTPTF_LIBFT=../libft) || true
+					$(call MINIRT_MSG,"Finished compiling dependencies")
+					$(call MINIRT_MSG,"Working on compiling miniRT...")
+					@clang -w -L$(MINIRT_OUT) -lft -lgnl -lftprintf \
+						-I../libft/includes \
+						-I../get_next_line/includes \
+						-I../ft_printf/includes \
+						-D SCREEN_WIDTH=$(SCREEN_WIDTH) -D SCREEN_HEIGHT=$(SCREEN_HEIGHT) \
+						$(MINIRT_SRCS) -o $(MINIRT_OUT)/miniRT_debug -O3 -march=skylake
+					$(call MINIRT_MSG,"Finished compiling project!")
+					$(call MINIRT_MSG, "⚠ Exit DEBUG mode ⚠")
 
 all:			$(MINIRT_NAME)
 
