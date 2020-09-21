@@ -6,7 +6,7 @@
 #    By: mmartin- <mmartin-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/01/10 15:21:05 by mmartin-          #+#    #+#              #
-#    Updated: 2020/09/18 20:48:48 by mmartin-         ###   ########.fr        #
+#    Updated: 2020/09/21 19:37:21 by mmartin-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -47,7 +47,7 @@ debug:
 					@(test ! -f $(MINIRT_OUT)/libftprintf.a && make -s -C ../ft_printf FTPTF_OUT=$(MINIRT_OUT) FTPTF_LIBFT=../libft) || true
 					$(call MINIRT_MSG,"Finished compiling dependencies")
 					$(call MINIRT_MSG,"Working on compiling miniRT...")
-					@clang -w -L$(MINIRT_OUT) -lft -lgnl -lftprintf \
+					@clang $(DEBUG_FLAG) -g -L$(MINIRT_OUT) -lft -lgnl -lftprintf \
 						-I../libft/includes \
 						-I../get_next_line/includes \
 						-I../ft_printf/includes \

@@ -6,7 +6,7 @@
 /*   By: mmartin- <mmartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/01 19:03:31 by mmartin-          #+#    #+#             */
-/*   Updated: 2020/09/18 20:28:40 by mmartin-         ###   ########.fr       */
+/*   Updated: 2020/09/21 20:37:50 by mmartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,14 @@
 # include <libft.h>
 
 typedef unsigned long long int	t_errcode;
+typedef unsigned int			t_color;
 
 typedef enum		e_errcodes
 {
 	CONF_MISSING = 0x1BDC6DB5339A5C7ULL,
 	CONF_INV_FMT = 0x1BDC6D8824D99B4ULL,
+	CONF_INV_RGB = 0x1BDC6D8824DC8E2ULL,
+	CONF_INV_NUM = 0x1BDC6D8824DBAADULL,
 	CONF_INV_RES = 0x6F71B6209372ULL,
 	CONF_INV_AMB = 0x6F71B6209361ULL,
 	CONF_INV_CAM = 0x6F71B6209363ULL,
@@ -56,7 +59,7 @@ typedef struct		s_res
 typedef struct		s_amb
 {
 	float				ratio;
-	unsigned int		color;
+	t_color				color;
 }					t_amb;
 
 typedef struct		s_camera
@@ -70,21 +73,21 @@ typedef struct		s_light
 {
 	struct s_vec		coords;
 	float				ratio;
-	unsigned int		color;
+	t_color				color;
 }					t_light;
 
 typedef struct		s_sphere
 {
 	struct s_vec		coords;
 	float				diameter;
-	unsigned int		color;
+	t_color				color;
 }					t_sphere;
 
 typedef struct		s_plane
 {
 	struct s_vec		coords;
 	struct s_vec		facing;
-	unsigned int		color;
+	t_color				color;
 }					t_plane;
 
 typedef struct		s_square
@@ -92,7 +95,7 @@ typedef struct		s_square
 	struct s_vec		coords;
 	struct s_vec		facing;
 	float				side_size;
-	unsigned int		color;
+	t_color				color;
 }					t_square;
 
 typedef struct		s_cylinder
@@ -101,7 +104,7 @@ typedef struct		s_cylinder
 	struct s_vec		facing;
 	float				diameter;
 	float				height;
-	unsigned int		color;
+	t_color				color;
 }					t_cylinder;
 
 typedef struct		s_triangle
@@ -109,7 +112,7 @@ typedef struct		s_triangle
 	struct s_vec		side_a;
 	struct s_vec		side_b;
 	struct s_vec		side_c;
-	unsigned int		color;
+	t_color				color;
 }					t_triangle;
 
 typedef struct		s_conf
@@ -127,6 +130,10 @@ typedef struct		s_conf
 
 void				print_error(t_errcode errcod);
 
+t_errcode			read_color(t_color *out, char const *line, t_byte len);
+t_errcode			read_rnumber(float *out, char const *line,
+									float min, float max);
+t_errcode			read_res(t_conf *conf, char const *line);
 t_errcode			read_conf(t_conf *conf, char const *path);
 
 #endif
