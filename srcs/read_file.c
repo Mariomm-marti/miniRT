@@ -6,11 +6,11 @@
 /*   By: mmartin- <mmartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/16 19:58:11 by mmartin-          #+#    #+#             */
-/*   Updated: 2020/09/21 20:47:31 by mmartin-         ###   ########.fr       */
+/*   Updated: 2020/09/24 18:37:53 by mmartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <fcntl.h>
+#include <fcntl.h> // review
 #include <unistd.h>
 #include <stdlib.h>
 #include <libft.h>
@@ -31,16 +31,6 @@ t_errcode		read_color(t_color *out, char const *line, t_byte len)
 	if (*++line == ',')
 		return (read_color(out, line + 1, len + 1));
 	return (len != 2 ? CONF_INV_RGB : 0);
-}
-
-t_errcode		read_rnumber(float *out, char const *line, float min, float max)
-{
-	int		integer;
-
-	*out = *line == '-' ?  -0.0f : 0.0f;
-	if (!ft_isdigit(*++line))
-		return (CONF_INV_NUM);
-	return (*out < min || *out > max ? CONF_INV_NUM : 0);
 }
 
 t_errcode		read_res(t_conf *conf, char const *line)
@@ -83,7 +73,10 @@ t_errcode		read_amb(t_conf *conf, char const *line)
 		return (CONF_INV_FMT);
 	while (ft_isspace(*line))
 		line++;
-	return (!error ? read_color(&conf->amb.color, line, 0) : error);
+	!error ? error = read_color(&conf->amb.color, line, 0) : 0;
+	while (ft_isdigit(*line) || *line == ',')
+		line++;
+	return (*line ? CONF_INV_AMB : error);
 }
 
 t_errcode		read_conf(t_conf *conf, char const *path)
@@ -94,11 +87,17 @@ t_errcode		read_conf(t_conf *conf, char const *path)
 
 	if (fd < 0)
 		return (CONF_MISSING);
-	while (get_next_line(fd, &line) == 1)
+	err = 0;
+	while (!err && get_next_line(fd, &line) == 1)
 	{
 		if (*line == 'R')
 			err = read_res(conf, line + 1);
+		else if (*line == 'A')
+			err = read_amb(conf, line + 1);
+		else if (*line)
+			err = CONF_INV_FMT;
 		free(line);
+		line = NULL;
 	}
 	if (line)
 		free(line);

@@ -6,20 +6,20 @@
 /*   By: mmartin- <mmartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/01 19:03:31 by mmartin-          #+#    #+#             */
-/*   Updated: 2020/09/21 20:37:50 by mmartin-         ###   ########.fr       */
+/*   Updated: 2020/09/24 17:22:27 by mmartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINIRT_H
 # define MINIRT_H
 
-#ifndef SCREEN_WIDTH
-# define SCREEN_WIDTH 1920
-#endif
+# ifndef SCREEN_WIDTH
+#  define SCREEN_WIDTH 1920
+# endif
 
-#ifndef SCREEN_HEIGHT
-# define SCREEN_HEIGHT 1080
-#endif
+# ifndef SCREEN_HEIGHT
+#  define SCREEN_HEIGHT 1080
+# endif
 
 # include <libft.h>
 
@@ -134,6 +134,7 @@ t_errcode			read_color(t_color *out, char const *line, t_byte len);
 t_errcode			read_rnumber(float *out, char const *line,
 									float min, float max);
 t_errcode			read_res(t_conf *conf, char const *line);
+t_errcode			read_amb(t_conf *conf, char const *line);
 t_errcode			read_conf(t_conf *conf, char const *path);
 
 #endif
