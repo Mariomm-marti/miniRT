@@ -6,7 +6,7 @@
 /*   By: mmartin- <mmartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/01 19:03:31 by mmartin-          #+#    #+#             */
-/*   Updated: 2020/09/24 17:22:27 by mmartin-         ###   ########.fr       */
+/*   Updated: 2020/09/26 12:34:29 by mmartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,10 +131,6 @@ typedef struct		s_conf
 void				print_error(t_errcode errcod);
 
 t_errcode			read_color(t_color *out, char const *line, t_byte len);
-t_errcode			read_rnumber(float *out, char const *line,
-									float min, float max);
-t_errcode			read_res(t_conf *conf, char const *line);
-t_errcode			read_amb(t_conf *conf, char const *line);
-t_errcode			read_conf(t_conf *conf, char const *path);
+t_errcode			read_rnum(float *out, char **line, float min, float max);
 
 #endif

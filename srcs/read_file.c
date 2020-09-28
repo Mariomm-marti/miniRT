@@ -6,7 +6,7 @@
 /*   By: mmartin- <mmartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/16 19:58:11 by mmartin-          #+#    #+#             */
-/*   Updated: 2020/09/24 18:37:53 by mmartin-         ###   ########.fr       */
+/*   Updated: 2020/09/26 14:39:35 by mmartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,76 +30,43 @@ t_errcode		read_color(t_color *out, char const *line, t_byte len)
 	*out = (*out << (8 * !!len)) | current_color;
 	if (*++line == ',')
 		return (read_color(out, line + 1, len + 1));
-	return (len != 2 ? CONF_INV_RGB : 0);
+	if (len != 2)
+		return (CONF_INV_RGB);
+	return (*line ? CONF_INV_FMT : 0);
 }
 
-t_errcode		read_res(t_conf *conf, char const *line)
+t_errcode		read_rnum(float *out, char **line, float min, float max)
 {
-	if (!ft_isspace(*line))
+	char					sign;
+	unsigned long long int	dec_pow;
+	t_byte					is_zero;
+
+	sign = (**line == '-' && ++*line) ? -1 : 1;
+	if (!ft_isdigit(**line))
 		return (CONF_INV_FMT);
-	while (ft_isspace(*line))
-		line++;
-	if (!ft_isdigit(*line))
-		return (CONF_INV_RES);
-	conf->res.x = *line - '0';
-	while (ft_isdigit(*(line + 1)))
-		conf->res.x = conf->res.x * 10 + (*++line - '0');
-	conf->res.x > SCREEN_WIDTH ? conf->res.x = SCREEN_WIDTH : 0;
-	if (!ft_isspace(*++line))
-		return (CONF_INV_RES);
-	while (ft_isspace(*line))
-		line++;
-	if (!ft_isdigit(*line))
-		return (CONF_INV_RES);
-	conf->res.y = *line - '0';
-	while (ft_isdigit(*(line + 1)))
-		conf->res.y = conf->res.y * 10 + (*++line - '0');
-	conf->res.y > SCREEN_HEIGHT ? conf->res.y = SCREEN_HEIGHT : 0;
-	return (*++line ? CONF_INV_RES : 0);
+	*out = **line - '0';
+	while (ft_isdigit(*(*line + 1)))
+		*out = *out * 10 + (*++*line - '0');
+	if (*++*line != '.')
+		return (0);
+	if (!ft_isdigit(*++*line))
+		return (CONF_INV_NUM);
+	is_zero = *out == 0.0f;
+	dec_pow = 10;
+	*out = (float)is_zero + (*out * 10 + (**line - '0'));
+	while (ft_isdigit(*(*line + 1)) && (dec_pow *= 10))
+		*out = *out * 10 + (*++*line - '0');
+	*out = (*out / dec_pow - (float)is_zero) * sign;
+	if (++*line && min == max)
+		return (0);
+	return (*out < min || *out > max ? CONF_INV_NUM : 0);
 }
 
-t_errcode		read_amb(t_conf *conf, char const *line)
+t_errcode		read_vec(t_vec *out, char **line, float min, float max)
 {
 	t_errcode	error;
 
-	if (!ft_isspace(*line))
-		return (CONF_INV_FMT);
-	while (ft_isspace(*line))
-		line++;
-	error = read_rnumber(&conf->amb.ratio, line, 0.0f, 1.0f);
-	while (ft_isdigit(*line) || *line == '.')
-		line++;
-	if (!ft_isspace(*line))
-		return (CONF_INV_FMT);
-	while (ft_isspace(*line))
-		line++;
-	!error ? error = read_color(&conf->amb.color, line, 0) : 0;
-	while (ft_isdigit(*line) || *line == ',')
-		line++;
-	return (*line ? CONF_INV_AMB : error);
-}
-
-t_errcode		read_conf(t_conf *conf, char const *path)
-{
-	int const	fd = open(path, O_RDONLY);
-	char		*line;
-	t_errcode	err;
-
-	if (fd < 0)
-		return (CONF_MISSING);
-	err = 0;
-	while (!err && get_next_line(fd, &line) == 1)
-	{
-		if (*line == 'R')
-			err = read_res(conf, line + 1);
-		else if (*line == 'A')
-			err = read_amb(conf, line + 1);
-		else if (*line)
-			err = CONF_INV_FMT;
-		free(line);
-		line = NULL;
-	}
-	if (line)
-		free(line);
-	return (err = close(fd) < 0 ? CONF_MISSING : err);
+	if ((error = read_rnum(out->x, line, min, max)))
+		return (error);
+	if (out
 }

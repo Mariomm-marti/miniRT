@@ -6,7 +6,7 @@
 #    By: mmartin- <mmartin-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/01/10 15:21:05 by mmartin-          #+#    #+#              #
-#    Updated: 2020/09/21 19:37:21 by mmartin-         ###   ########.fr        #
+#    Updated: 2020/09/26 12:54:04 by mmartin-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,8 +20,10 @@ MINIRT_NAME	= miniRT
 MINIRT_LIBFT:= $(addprefix $(MINIRT_OUT),"/srcs/libft")
 MINIRT_GNL	:= $(addprefix $(MINIRT_OUT),"/srcs/get_next_line")
 MINIRT_FTPTF:= $(addprefix $(MINIRT_OUT),"/srcs/ft_printf")
-SCREEN_WIDTH = $(shell system_profiler SPDisplaysDataType | grep "Resolution" | cut -d" " -f12)
-SCREEN_HEIGHT = $(shell system_profiler SPDisplaysDataType | grep "Resolution" | cut -d" " -f14)
+# SCREEN_WIDTH = $(shell system_profiler SPDisplaysDataType | grep "Resolution" | cut -d" " -f12)
+# SCREEN_HEIGHT = $(shell system_profiler SPDisplaysDataType | grep "Resolution" | cut -d" " -f14)
+SCREEN_WIDTH = 1920
+SCREEN_HEIGHT = 1080
 
 
 $(MINIRT_NAME):
