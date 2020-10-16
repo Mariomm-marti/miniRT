@@ -6,40 +6,38 @@
 /*   By: mmartin- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/16 01:17:01 by mmartin-          #+#    #+#             */
-/*   Updated: 2020/10/16 02:47:40 by mmartin-         ###   ########.fr       */
+/*   Updated: 2020/10/16 22:56:50 by mmartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minirt.h"
 
-float		read_val(char const *str, float min, float max, t_byte is_int)
+float		read_val(char **str, float min, float max, t_byte is_int)
 {
 	float	ret;
 	float	dec_pow;
 	char	sign;
 
-	sign = *str == '-' ? !(*str++) - 1 : 1;
-	if (!ft_isdigit(*str))
-		return ((float)(!(g_errno = CONF_INV_NUM)));
-	ret = *str - '0';
-	while (ft_isdigit(*(str + 1)))
-		ret = ret * 10 + (*str++ - '0');
-	if (is_int && *++str != '.' && ret >= min && ret <= max)
+	sign = **str == '-' && *++str ? -1 : 1;
+	if (!ft_isdigit(**str))
+		return (!(g_errno = CONF_INV_NUM));
+	ret = **str - '0';
+	while (ft_isdigit(*(*str + 1)))
+		ret = ret * 10 + (*++*str - '0');
+	if (is_int && *++*str == '.')
+		return (!(g_errno = CONF_INV_NUM));
+	if (**str != '.'	)
+	{
+		ret = ret * sign;
+		if (min != max && (ret < min || ret > max))
+			g_errno = CONF_INV_NUM;
 		return (ret);
-	if (is_int)
-		return ((float)(!(g_errno = CONF_INV_NUM)));
-	if (*str != '.')
-		return ((float)(!(g_errno = CONF_INV_FMT)));
-	ret = ret * 10 + (*++str - '0');
-	dec_pow = 10;
-	while (ft_isdigit(*(str + 1)) && (dec_pow *= 10))
-		ret = ret * 10 + (*str++ - '0');
-	if ((ret = ret / dec_pow * sign) < min || ret > max)
-		return ((float)(!(g_errno = CONF_INV_NUM)));
-	return (ret);
+	}
+	ret = *
+	return (ret / dec_pow * sign);
 }
 
-t_vec		read_vec(char const *str, float min, float max, t_byte is_int)
+t_vec		read_vec(char **str, float min, float max, t_byte is_int)
 {
 	t_vec	out;
 
@@ -49,7 +47,7 @@ t_vec		read_vec(char const *str, float min, float max, t_byte is_int)
 	return (out);
 }
 
-t_color		read_color(char const *str)
+t_color		read_color(char **str)
 {
 	t_vec	vec;
 	t_color	color;
@@ -65,5 +63,9 @@ t_color		read_color(char const *str)
 
 int			main(int argc, char **argv)
 {
-	printf("OUT: %f\nERRNO: %llu\n", read_val(argv[1], atof(argv[2]), atof(argv[3]), atoi(argv[4])), g_errno);
+	char *str;
+
+	str = strdup(argv[1]);
+	printf("IN: %s\n\n", str);
+	printf("OUT: %f\nERRNO: %llu\n", read_val(&str, 0.0f, 0.0f, 0), g_errno);
 }
