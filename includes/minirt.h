@@ -6,7 +6,7 @@
 /*   By: mmartin- <mmartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/01 19:03:31 by mmartin-          #+#    #+#             */
-/*   Updated: 2020/09/26 12:34:29 by mmartin-         ###   ########.fr       */
+/*   Updated: 2020/10/16 01:25:35 by mmartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,12 @@
 typedef unsigned long long int	t_errcode;
 typedef unsigned int			t_color;
 
-typedef enum		e_errcodes
+enum							e_keycodes
+{
+	KEY_ESC = 53
+};
+
+enum							e_errcodes
 {
 	CONF_MISSING = 0x1BDC6DB5339A5C7ULL,
 	CONF_INV_FMT = 0x1BDC6D8824D99B4ULL,
@@ -41,7 +46,7 @@ typedef enum		e_errcodes
 	CONF_INV_SQUARE = 0xDEE36C4126E71ULL,
 	CONF_INV_CYLINDER = 0xDEE36C4126C79ULL,
 	CONF_INV_TRIANGLE = 0xDEE36C4126E92ULL
-}					t_errcodes;
+};
 
 typedef struct		s_vec
 {
@@ -67,6 +72,7 @@ typedef struct		s_camera
 	struct s_vec		coods;
 	struct s_vec		facing;
 	t_byte				fov;
+	struct s_camera		*next;
 }					t_camera;
 
 typedef struct		s_light
@@ -74,6 +80,7 @@ typedef struct		s_light
 	struct s_vec		coords;
 	float				ratio;
 	t_color				color;
+	struct s_light		*next;
 }					t_light;
 
 typedef struct		s_sphere
@@ -81,6 +88,7 @@ typedef struct		s_sphere
 	struct s_vec		coords;
 	float				diameter;
 	t_color				color;
+	struct s_sphere		*next;
 }					t_sphere;
 
 typedef struct		s_plane
@@ -88,6 +96,7 @@ typedef struct		s_plane
 	struct s_vec		coords;
 	struct s_vec		facing;
 	t_color				color;
+	struct s_plane		*next;
 }					t_plane;
 
 typedef struct		s_square
@@ -96,6 +105,7 @@ typedef struct		s_square
 	struct s_vec		facing;
 	float				side_size;
 	t_color				color;
+	struct s_square		*next;
 }					t_square;
 
 typedef struct		s_cylinder
@@ -105,6 +115,7 @@ typedef struct		s_cylinder
 	float				diameter;
 	float				height;
 	t_color				color;
+	struct s_cylinder	*next;
 }					t_cylinder;
 
 typedef struct		s_triangle
@@ -113,24 +124,24 @@ typedef struct		s_triangle
 	struct s_vec		side_b;
 	struct s_vec		side_c;
 	t_color				color;
+	struct s_triangle	*next;
 }					t_triangle;
 
 typedef struct		s_conf
 {
-	struct s_res		res;
-	struct s_amb		amb;
-	struct s_list		*cameras;
-	struct s_list		*lights;
-	struct s_list		*spheres;
-	struct s_list		*planes;
-	struct s_list		*squares;
-	struct s_list		*cylinders;
-	struct s_list		*triangles;
+	struct s_res		r;
+	struct s_amb		a;
+	struct s_camera		*c;
+	struct s_light		*l;
+	struct s_sphere		*sp;
+	struct s_plane		*pl;
+	struct s_square		*sq;
+	struct s_cylinder	*cy;
+	struct s_triangle	*tr;
 }					t_conf;
 
-void				print_error(t_errcode errcod);
+t_errcode			g_errno = 0;
 
-t_errcode			read_color(t_color *out, char const *line, t_byte len);
-t_errcode			read_rnum(float *out, char **line, float min, float max);
+void				print_error();
 
 #endif
