@@ -6,7 +6,7 @@
 /*   By: mmartin- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/16 01:17:01 by mmartin-          #+#    #+#             */
-/*   Updated: 2020/10/18 22:56:57 by mmartin-         ###   ########.fr       */
+/*   Updated: 2020/10/19 02:09:34 by mmartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ float		read_val(char **str, float min, float max, t_byte is_int)
 	ret = ret * 10 + (**str - '0');
 	while (ft_isdigit(*(*str + 1)) && (pow *= 10))
 		ret = ret * 10 + (*++*str - '0');
-	if (((ret = ret / pow * sign) < min || ret > max) && min != max)
+	if (++*str && ((ret = ret / pow * sign) < min || ret > max) && min != max)
 		g_errno = CONF_INV_NUM;
 	return (ret);
 }
@@ -58,13 +58,15 @@ t_vec		read_vec(char **str, float min, float max, t_byte is_int)
 	return (out);
 }
 
-int			main(int argc, char **argv)
+t_color		read_color(char **str)
 {
-	char	*str;
-	t_vec	out;
+	t_vec 	out;
 
-	str = strdup(argv[1]);
-	printf("IN: %s\n\n", str);
-	out = read_vec(&str, atof(argv[2]), atof(argv[3]), atoi(argv[4]));
-	printf("OUT X: %f\nOUT Y: %f\nOUT Z: %f\nERRNO: %llu\n", out.x, out.y, out.z, g_errno);
+	out = read_vec(str, 0.0f, 255.0f, 1);
+	if (g_errno)
+	{
+		g_errno = CONF_INV_RGB;
+		return (0);
+	}
+	return ((int)out.x << 16 | (int)out.y << 8 | (int)out.z);
 }

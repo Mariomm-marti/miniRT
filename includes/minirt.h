@@ -6,7 +6,7 @@
 /*   By: mmartin- <mmartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/01 19:03:31 by mmartin-          #+#    #+#             */
-/*   Updated: 2020/10/16 22:30:57 by mmartin-         ###   ########.fr       */
+/*   Updated: 2020/10/19 04:03:29 by mmartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,15 +73,15 @@ typedef struct		s_camera
 	int					*grid;
 	int					bpp;
 	int					sline;
-	struct s_vec		coods;
-	struct s_vec		facing;
+	struct s_vec		loc;
+	struct s_vec		dir;
 	t_byte				fov;
 	struct s_camera		*next;
 }					t_camera;
 
 typedef struct		s_light
 {
-	struct s_vec		coords;
+	struct s_vec		loc;
 	float				ratio;
 	t_color				color;
 	struct s_light		*next;
@@ -89,7 +89,7 @@ typedef struct		s_light
 
 typedef struct		s_sphere
 {
-	struct s_vec		coords;
+	struct s_vec		loc;
 	float				diameter;
 	t_color				color;
 	struct s_sphere		*next;
@@ -97,16 +97,16 @@ typedef struct		s_sphere
 
 typedef struct		s_plane
 {
-	struct s_vec		coords;
-	struct s_vec		facing;
+	struct s_vec		loc;
+	struct s_vec		dir;
 	t_color				color;
 	struct s_plane		*next;
 }					t_plane;
 
 typedef struct		s_square
 {
-	struct s_vec		coords;
-	struct s_vec		facing;
+	struct s_vec		loc;
+	struct s_vec		dir;
 	float				side_size;
 	t_color				color;
 	struct s_square		*next;
@@ -114,8 +114,8 @@ typedef struct		s_square
 
 typedef struct		s_cylinder
 {
-	struct s_vec		coords;
-	struct s_vec		facing;
+	struct s_vec		loc;
+	struct s_vec		dir;
 	float				diameter;
 	float				height;
 	t_color				color;
@@ -147,5 +147,13 @@ typedef struct		s_conf
 t_errcode			g_errno = 0;
 
 void				print_error();
+
+float				read_val(char **str, float min, float max, t_byte is_int);
+t_vec				read_vec(char **str, float min, float max, t_byte is_int);
+t_color				read_color(char **str);
+
+int					create_camera(t_conf *conf, char *str, void *mlx_ptr);
+t_camera			*get_camera(t_conf *conf, size_t index);
+void				free_cameras(t_conf *conf, void *mlx_ptr);
 
 #endif
