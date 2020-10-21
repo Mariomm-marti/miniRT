@@ -6,11 +6,12 @@
 /*   By: mmartin- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/19 03:10:31 by mmartin-          #+#    #+#             */
-/*   Updated: 2020/10/19 03:59:28 by mmartin-         ###   ########.fr       */
+/*   Updated: 2020/10/21 22:21:07 by mmartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minirt.h"
+#include <stdlib.h>
 #include <mlx.h>
 
 int			main(int argc, char **argv)
@@ -23,6 +24,7 @@ int			main(int argc, char **argv)
 	if (!(mlx_ptr = mlx_init()))
 		return (-1);
 	count = 0;
+	ft_bzero(&config, sizeof(t_conf));
 	while (++count < argc)
 	{
 		if (!(create_camera(&config, *(argv + count), mlx_ptr)) || g_errno)
@@ -30,6 +32,7 @@ int			main(int argc, char **argv)
 			if (g_errno)
 				print_error();
 			free_cameras(&config, mlx_ptr);
+			system("leaks a.out");
 			return (-1);
 		}
 		current = get_camera(&config, count - 1);
@@ -42,4 +45,7 @@ int			main(int argc, char **argv)
 		printf("FOV: %d\n", current->fov);
 		printf("NEXT PTR: %p\n\n\n", &current->next);
 	}
+	print_error();
+	free(mlx_ptr);
+	system("leaks a.out");
 }

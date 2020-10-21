@@ -6,59 +6,63 @@
 /*   By: mmartin- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/16 01:17:01 by mmartin-          #+#    #+#             */
-/*   Updated: 2020/10/19 02:09:34 by mmartin-         ###   ########.fr       */
+/*   Updated: 2020/10/21 22:30:04 by mmartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minirt.h"
 
-float		read_val(char **str, float min, float max, t_byte is_int)
+float		read_val(char *str, float min, float max, t_byte is_int)
 {
 	float	ret;
 	float	pow;
 	char	sign;
 
-	sign = **str == '-' && *++*str ? -1 : 1;
-	if (!ft_isdigit(**str))
+	sign = *str == '-' && ++str ? -1 : 1;
+	if (!ft_isdigit(*str))
 		return (!(g_errno = CONF_INV_NUM));
-	ret = **str - '0';
-	while (ft_isdigit(*(*str + 1)))
-		ret = ret * 10 + (*++*str - '0');
-	if (*++*str == '.' && is_int)
+	ret = *str - '0';
+	while (ft_isdigit(*(str + 1)))
+		ret = ret * 10 + (*++str - '0');
+	if (*++str == '.' && is_int)
 		return (!(g_errno = CONF_INV_NUM));
-	if (**str != '.')
+	if (*str != '.')
 	{
 		if (((ret = ret * sign) < min || ret > max) && min != max)
 			g_errno = CONF_INV_NUM;
 		return (ret);
 	}
-	if ((pow = 10) && !ft_isdigit(*++*str))
+	if ((pow = 10) && !ft_isdigit(*++str))
 		return (!(g_errno = CONF_INV_NUM));
-	ret = ret * 10 + (**str - '0');
-	while (ft_isdigit(*(*str + 1)) && (pow *= 10))
-		ret = ret * 10 + (*++*str - '0');
-	if (++*str && ((ret = ret / pow * sign) < min || ret > max) && min != max)
+	ret = ret * 10 + (*str - '0');
+	while (ft_isdigit(*(str + 1)) && (pow *= 10))
+		ret = ret * 10 + (*++str - '0');
+	if (++str && ((ret = ret / pow * sign) < min || ret > max) && min != max)
 		g_errno = CONF_INV_NUM;
 	return (ret);
 }
 
-t_vec		read_vec(char **str, float min, float max, t_byte is_int)
+t_vec		read_vec(char *str, float min, float max, t_byte is_int)
 {
 	t_vec	out;
+	int		wc;
+	char	**tab;
 
-	out.x = read_val(str, min, max, is_int);
-	if (*(*str)++ != ',')
+	if (!(tab = ft_split(&wc, str, ',')) || wc != 3)
+	{
+		if (wc != 3)
+			ft_split_free(tab);
 		g_errno = CONF_INV_FMT;
-	out.y = read_val(str, min, max, is_int);
-	if (*(*str)++ != ',')
-		g_errno = CONF_INV_FMT;
-	out.z = read_val(str, min, max, is_int);
-	if (**str)
-		g_errno = CONF_INV_FMT;
+		return (out);
+	}
+	out.x = read_val(*tab, min, max, is_int);
+	out.y = read_val(*(tab + 1), min, max, is_int);
+	out.z = read_val(*(tab + 2), min, max, is_int);
+	ft_split_free(tab);
 	return (out);
 }
 
-t_color		read_color(char **str)
+t_color		read_color(char *str)
 {
 	t_vec 	out;
 

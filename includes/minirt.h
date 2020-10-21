@@ -6,7 +6,7 @@
 /*   By: mmartin- <mmartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/01 19:03:31 by mmartin-          #+#    #+#             */
-/*   Updated: 2020/10/19 04:03:29 by mmartin-         ###   ########.fr       */
+/*   Updated: 2020/10/21 21:51:19 by mmartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,13 +144,13 @@ typedef struct		s_conf
 	struct s_triangle	*tr;
 }					t_conf;
 
-t_errcode			g_errno = 0;
+t_errcode			g_errno;
 
 void				print_error();
 
-float				read_val(char **str, float min, float max, t_byte is_int);
-t_vec				read_vec(char **str, float min, float max, t_byte is_int);
-t_color				read_color(char **str);
+float				read_val(char *str, float min, float max, t_byte is_int);
+t_vec				read_vec(char *str, float min, float max, t_byte is_int);
+t_color				read_color(char *str);
 
 int					create_camera(t_conf *conf, char *str, void *mlx_ptr);
 t_camera			*get_camera(t_conf *conf, size_t index);
