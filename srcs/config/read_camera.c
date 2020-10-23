@@ -6,7 +6,7 @@
 /*   By: mmartin- <mmartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/16 22:18:24 by mmartin-          #+#    #+#             */
-/*   Updated: 2020/10/21 22:20:38 by mmartin-         ###   ########.fr       */
+/*   Updated: 2020/10/22 22:33:36 by mmartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ void		free_cameras(t_conf *conf, void *mlx_ptr)
 {
 	t_camera	*copy;
 
+	printf("%p\n", conf->c);
 	if (!conf->c)
 		return ;
 	while (conf->c)

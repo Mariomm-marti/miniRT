@@ -6,7 +6,7 @@
 /*   By: mmartin- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/16 01:17:01 by mmartin-          #+#    #+#             */
-/*   Updated: 2020/10/21 22:30:04 by mmartin-         ###   ########.fr       */
+/*   Updated: 2020/10/23 22:58:10 by mmartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,20 +45,7 @@ float		read_val(char *str, float min, float max, t_byte is_int)
 t_vec		read_vec(char *str, float min, float max, t_byte is_int)
 {
 	t_vec	out;
-	int		wc;
-	char	**tab;
 
-	if (!(tab = ft_split(&wc, str, ',')) || wc != 3)
-	{
-		if (wc != 3)
-			ft_split_free(tab);
-		g_errno = CONF_INV_FMT;
-		return (out);
-	}
-	out.x = read_val(*tab, min, max, is_int);
-	out.y = read_val(*(tab + 1), min, max, is_int);
-	out.z = read_val(*(tab + 2), min, max, is_int);
-	ft_split_free(tab);
 	return (out);
 }
 
