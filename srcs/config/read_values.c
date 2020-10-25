@@ -6,58 +6,95 @@
 /*   By: mmartin- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/16 01:17:01 by mmartin-          #+#    #+#             */
-/*   Updated: 2020/10/23 22:58:10 by mmartin-         ###   ########.fr       */
+/*   Updated: 2020/10/25 22:17:20 by mmartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minirt.h"
+#include <stdlib.h>
+#include <libft.h>
 
-float		read_val(char *str, float min, float max, t_byte is_int)
+static float	read_vec_val(char **str)
 {
-	float	ret;
-	float	pow;
+	float	final;
+	float	dec_pow;
 	char	sign;
 
-	sign = *str == '-' && ++str ? -1 : 1;
-	if (!ft_isdigit(*str))
-		return (!(g_errno = CONF_INV_NUM));
-	ret = *str - '0';
-	while (ft_isdigit(*(str + 1)))
-		ret = ret * 10 + (*++str - '0');
-	if (*++str == '.' && is_int)
-		return (!(g_errno = CONF_INV_NUM));
-	if (*str != '.')
+	sign = **str == '-' && ++*str ? -1 : 1;
+	if (!ft_isdigit(**str))
+		return (!(g_errno = CONF_INV_FMT));
+	final = **str - '0';
+	while (ft_isdigit(*(*str + 1)))
+		final = final * 10 + (*++*str - '0');
+	if (*++*str != '.')
+		return (final);
+	if (!ft_isdigit(**str))
+		return (!(g_errno = CONF_INV_FMT));
+	final = final * 10 + (*++*str - '0');
+	dec_pow = 10;
+	while (ft_isdigit(*(*str + 1)))
 	{
-		if (((ret = ret * sign) < min || ret > max) && min != max)
-			g_errno = CONF_INV_NUM;
-		return (ret);
+		final = final * 10 + (*++*str - '0');
+		dec_pow = dec_pow * 10;
 	}
-	if ((pow = 10) && !ft_isdigit(*++str))
-		return (!(g_errno = CONF_INV_NUM));
-	ret = ret * 10 + (*str - '0');
-	while (ft_isdigit(*(str + 1)) && (pow *= 10))
-		ret = ret * 10 + (*++str - '0');
-	if (++str && ((ret = ret / pow * sign) < min || ret > max) && min != max)
-		g_errno = CONF_INV_NUM;
-	return (ret);
+	++*str;
+	return (final / dec_pow * sign);
 }
 
-t_vec		read_vec(char *str, float min, float max, t_byte is_int)
+t_vec			read_vec(char *str, float min, float max)
 {
-	t_vec	out;
-
+	t_vec		out;
+	char		*dup;
+	
+	dup = ft_strdup(str);
+	str = dup;
+	out.x = read_vec_val(&dup);
+	if (*dup++ != ',')
+		g_errno = CONF_INV_FMT;
+	out.y = read_vec_val(&dup);
+	if (*dup++ != ',')
+		g_errno = CONF_INV_FMT;
+	out.z = read_vec_val(&dup);
+	if (*dup)
+		g_errno = CONF_INV_FMT;
+	if (min != max && (out.x < min || out.x > max || out.y < min ||
+				out.y > max || out.z < min || out.z > max))
+		g_errno = CONF_INV_NUM;
+	free(str);
 	return (out);
 }
 
-t_color		read_color(char *str)
+t_color			read_color(char *str)
 {
-	t_vec 	out;
+	t_color	red;
+	t_color	green;
+	t_color	blue;
 
-	out = read_vec(str, 0.0f, 255.0f, 1);
-	if (g_errno)
-	{
+	if (!ft_isdigit(*str))
 		g_errno = CONF_INV_RGB;
-		return (0);
-	}
-	return ((int)out.x << 16 | (int)out.y << 8 | (int)out.z);
+	red = *str - '0';
+	while (ft_isdigit(*(str + 1)))
+		red = red * 10 + (*++str - '0');
+	if (*++str != ',' || red > 255 || !ft_isdigit(*++str))
+		g_errno = CONF_INV_RGB;
+	green = *str - '0';
+	while (ft_isdigit(*(str + 1)))
+		green = green * 10 + (*++str - '0');
+	if (*++str != ',' || green > 255 || !ft_isdigit(*++str))
+		g_errno = CONF_INV_RGB;
+	blue = *str - '0';
+	while (ft_isdigit(*(str + 1)))
+		blue = blue * 10 + (*++str - '0');
+	if (*++str || blue > 255)
+		g_errno = CONF_INV_RGB;
+	return (red << 16 | green << 8 | blue);
+}
+
+int			main(int argc, char **argv)
+{
+	t_color	out;
+
+	out = read_color(argv[1]);
+	print_error();
+	printf("\nCOLOR: %.6X", out);
 }

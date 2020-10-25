@@ -6,7 +6,7 @@
 /*   By: mmartin- <mmartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/01 19:03:31 by mmartin-          #+#    #+#             */
-/*   Updated: 2020/10/21 21:51:19 by mmartin-         ###   ########.fr       */
+/*   Updated: 2020/10/25 21:20:51 by mmartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,8 +148,7 @@ t_errcode			g_errno;
 
 void				print_error();
 
-float				read_val(char *str, float min, float max, t_byte is_int);
-t_vec				read_vec(char *str, float min, float max, t_byte is_int);
+t_vec				read_vec(char *str, float min, float max);
 t_color				read_color(char *str);
 
 int					create_camera(t_conf *conf, char *str, void *mlx_ptr);
