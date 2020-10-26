@@ -6,7 +6,7 @@
 /*   By: mmartin- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/16 01:17:01 by mmartin-          #+#    #+#             */
-/*   Updated: 2020/10/25 22:17:20 by mmartin-         ###   ########.fr       */
+/*   Updated: 2020/10/26 18:13:55 by mmartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,13 +88,4 @@ t_color			read_color(char *str)
 	if (*++str || blue > 255)
 		g_errno = CONF_INV_RGB;
 	return (red << 16 | green << 8 | blue);
-}
-
-int			main(int argc, char **argv)
-{
-	t_color	out;
-
-	out = read_color(argv[1]);
-	print_error();
-	printf("\nCOLOR: %.6X", out);
 }
