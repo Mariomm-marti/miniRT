@@ -6,7 +6,7 @@
 /*   By: mmartin- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/16 01:17:01 by mmartin-          #+#    #+#             */
-/*   Updated: 2020/10/26 18:13:55 by mmartin-         ###   ########.fr       */
+/*   Updated: 2020/10/27 22:48:53 by mmartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,9 @@ static float	read_vec_val(char **str)
 		final = final * 10 + (*++*str - '0');
 	if (*++*str != '.')
 		return (final);
-	if (!ft_isdigit(**str))
+	if (!ft_isdigit(*++*str))
 		return (!(g_errno = CONF_INV_FMT));
-	final = final * 10 + (*++*str - '0');
+	final = final * 10 + (**str - '0');
 	dec_pow = 10;
 	while (ft_isdigit(*(*str + 1)))
 	{
@@ -38,6 +38,35 @@ static float	read_vec_val(char **str)
 		dec_pow = dec_pow * 10;
 	}
 	++*str;
+	return (final / dec_pow * sign);
+}
+
+float			read_val(char *str, t_byte is_int)
+{
+	float	final;
+	float	dec_pow;
+	char	sign;
+
+	sign = *str == '-' && ++str ? -1 : 1;
+	if (!ft_isdigit(*str))
+		return (!(g_errno = CONF_INV_NUM));
+	final = *str - '0';
+	while (ft_isdigit(*(str + 1)))
+		final = final * 10 + (*++str - '0');
+	if (*++str && is_int)
+		return (!(g_errno = CONF_INV_FMT));
+	if (is_int)
+		return (final * sign);
+	if (*str != '.')
+		return (!(g_errno = CONF_INV_NUM));
+	if (!ft_isdigit(*++str))
+		return (!(g_errno = CONF_INV_FMT));
+	dec_pow = 10;
+	final = final * 10 + (*str - '0');
+	while (ft_isdigit(*(str + 1)) && (dec_pow *= 10))
+		final = final * 10 + (*str - '0');
+	if (*++str)
+		return (!(g_errno = CONF_INV_FMT));
 	return (final / dec_pow * sign);
 }
 
@@ -55,7 +84,7 @@ t_vec			read_vec(char *str, float min, float max)
 	if (*dup++ != ',')
 		g_errno = CONF_INV_FMT;
 	out.z = read_vec_val(&dup);
-	if (*dup)
+	if (*dup++)
 		g_errno = CONF_INV_FMT;
 	if (min != max && (out.x < min || out.x > max || out.y < min ||
 				out.y > max || out.z < min || out.z > max))

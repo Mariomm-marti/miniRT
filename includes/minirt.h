@@ -6,7 +6,7 @@
 /*   By: mmartin- <mmartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/01 19:03:31 by mmartin-          #+#    #+#             */
-/*   Updated: 2020/10/26 18:13:27 by mmartin-         ###   ########.fr       */
+/*   Updated: 2020/10/27 20:44:40 by mmartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,6 +148,7 @@ t_errcode			g_errno;
 
 void				print_error();
 
+float				read_val(char *str, t_byte is_int);
 t_vec				read_vec(char *str, float min, float max);
 t_color				read_color(char *str);
 

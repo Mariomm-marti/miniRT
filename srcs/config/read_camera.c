@@ -6,7 +6,7 @@
 /*   By: mmartin- <mmartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/16 22:18:24 by mmartin-          #+#    #+#             */
-/*   Updated: 2020/10/26 22:35:56 by mmartin-         ###   ########.fr       */
+/*   Updated: 2020/10/27 22:41:18 by mmartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int			create_camera(t_conf *conf, char *str, void *mlx_ptr)
 {
 	t_camera	cam;
 	char		**tab;
-	int			fov;
+	int			endian;
 
 	if (!(tab = ft_split(str, ' ')))
 		return (0);
@@ -30,13 +30,11 @@ int			create_camera(t_conf *conf, char *str, void *mlx_ptr)
 		return (0);
 	}
 	cam.img = mlx_new_image(mlx_ptr, SCREEN_WIDTH, SCREEN_HEIGHT);
-	cam.grid = (int *)mlx_get_data_addr(cam.img, &cam.bpp, &cam.sline, &fov);
+	cam.grid = (int *)mlx_get_data_addr(cam.img, &cam.bpp, &cam.sline, &endian);
 	cam.loc = read_vec(*(tab + 1), 0.0f, 0.0f);
 	cam.dir = read_vec(*(tab + 2), 0.0f, 1.0f);
-	if (!ft_isdigit(*(*(tab + 3))))
-		g_errno = CONF_INV_FMT;
-	if ((fov = ft_atoi(*(tab + 3))) < 0 || fov > 180)
-		g_errno = CONF_INV_FMT;
+	if ((cam.fov = read_val(*(tab + 3), 1)) < 0 || cam.fov > 180)
+		g_errno = CONF_INV_NUM;
 	cam.next = conf->c;
 	conf->c = ft_memdup(&cam, sizeof(t_camera));
 	ft_split_free(tab);
@@ -62,8 +60,6 @@ void		free_cameras(t_conf *conf, void *mlx_ptr)
 {
 	t_camera	*copy;
 
-	if (!conf->c)
-		return ;
 	while (conf->c)
 	{
 		copy = conf->c->next;
