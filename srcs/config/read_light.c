@@ -6,7 +6,7 @@
 /*   By: mmartin- <mmartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/27 19:23:28 by mmartin-          #+#    #+#             */
-/*   Updated: 2020/10/28 04:15:36 by mmartin-         ###   ########.fr       */
+/*   Updated: 2020/10/28 13:59:49 by mmartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,18 @@
 #include <libft.h>
 #include <stdlib.h>
 
-int			create_light(t_conf *conf, char *str)
+t_light		*create_light(t_conf *conf, char *str)
 {
 	t_light		light;
 	char		**tab;
 
 	if (!(tab = ft_split(str, ' ')))
-		return (0);
+		return (NULL);
 	if (ft_split_count(tab) != 4 || ft_strcmp(*tab, "l"))
 	{
 		ft_split_free(tab);
 		g_errno = CONF_INV_LIGHT;
-		return (0);
+		return (NULL);
 	}
 	light.loc = read_vec(*(tab + 1), 0.0f, 0.0f);
 	if ((light.ratio = read_val(*(tab + 2), 0)) < 0.0f || light.ratio > 1.0f)
@@ -34,7 +34,7 @@ int			create_light(t_conf *conf, char *str)
 	light.next = conf->l;
 	conf->l = ft_memdup(&light, sizeof(t_light));
 	ft_split_free(tab);
-	return (1);
+	return (conf->l);
 }
 
 t_light		*get_light(t_conf *conf, size_t index)

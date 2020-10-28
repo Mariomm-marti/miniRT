@@ -6,7 +6,7 @@
 /*   By: mmartin- <mmartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/01 19:03:31 by mmartin-          #+#    #+#             */
-/*   Updated: 2020/10/28 04:06:20 by mmartin-         ###   ########.fr       */
+/*   Updated: 2020/10/28 14:18:46 by mmartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,14 +152,17 @@ float				read_val(char *str, t_byte is_int);
 t_vec				read_vec(char *str, float min, float max);
 t_color				read_color(char *str);
 
-int					create_camera(t_conf *conf, char *str, void *mlx_ptr);
-int					create_light(t_conf *conf, char *str);
-int					create_sphere(t_conf *conf, char *str);
+t_camera			*create_camera(t_conf *conf, char *str, void *mlx_ptr);
+t_light				*create_light(t_conf *conf, char *str);
+t_sphere			*create_sphere(t_conf *conf, char *str);
+t_plane				*create_plane(t_conf *conf, char *str);
 t_camera			*get_camera(t_conf *conf, size_t index);
 t_light				*get_light(t_conf *conf, size_t index);
 t_sphere			*get_sphere(t_conf *conf, size_t index);
+t_plane				*get_plane(t_conf *conf, size_t index);
 void				free_cameras(t_conf *conf, void *mlx_ptr);
 void				free_lights(t_conf *conf);
 void				free_spheres(t_conf *conf);
+void				free_planes(t_conf *conf);
 
 #endif

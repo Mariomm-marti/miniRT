@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   read_sphere.c                                      :+:      :+:    :+:   */
+/*   read_plane.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mmartin- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/10/28 03:59:02 by mmartin-          #+#    #+#             */
-/*   Updated: 2020/10/28 14:00:14 by mmartin-         ###   ########.fr       */
+/*   Created: 2020/10/28 14:04:33 by mmartin-          #+#    #+#             */
+/*   Updated: 2020/10/28 14:12:47 by mmartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,36 +14,35 @@
 #include <libft.h>
 #include <stdlib.h>
 
-t_sphere	*create_sphere(t_conf *conf, char *str)
+t_plane		*create_plane(t_conf *conf, char *str)
 {
-	t_sphere	sphere;
+	t_plane		plane;
 	char		**tab;
 
 	if (!(tab = ft_split(str, ' ')))
 		return (NULL);
-	if (ft_split_count(tab) != 4 || ft_strcmp(*tab, "sp"))
+	if (ft_split_count(tab) != 4 || ft_strcmp(*tab, "pl"))
 	{
 		ft_split_free(tab);
-		g_errno = CONF_INV_SPHERE;
+		g_errno = CONF_INV_PLANE;
 		return (NULL);
 	}
-	sphere.loc = read_vec(*(tab + 1), 0.0f, 0.0f);
-	if ((sphere.diameter = read_val(*(tab + 2), 0)) < 0.1)
-		g_errno = CONF_INV_SPHERE;
-	sphere.color = read_color(*(tab + 3));
-	sphere.next = conf->sp;
-	conf->sp = ft_memdup(&sphere, sizeof(t_sphere));
+	plane.loc = read_vec(*(tab + 1), 0.0f, 0.0f);
+	plane.dir = read_vec(*(tab + 2), 0.0f, 1.0f);
+	plane.color = read_color(*(tab + 3));
+	plane.next = conf->pl;
+	conf->pl = ft_memdup(&plane, sizeof(t_plane));
 	ft_split_free(tab);
-	return (conf->sp);
+	return (conf->pl);
 }
 
-t_sphere	*get_sphere(t_conf *conf, size_t index)
+t_plane		*get_plane(t_conf *conf, size_t index)
 {
 	size_t		count;
-	t_sphere	*ret;
+	t_plane		*ret;
 
 	count = 1;
-	ret = conf->sp;
+	ret = conf->pl;
 	while (count <= index && ret)
 	{
 		ret = ret->next;
@@ -52,14 +51,14 @@ t_sphere	*get_sphere(t_conf *conf, size_t index)
 	return (ret);
 }
 
-void		free_spheres(t_conf *conf)
+void		free_planes(t_conf *conf)
 {
-	t_sphere	*copy;
+	t_plane		*copy;
 
-	while (conf->sp)
+	while (conf->pl)
 	{
-		copy = conf->sp->next;
-		free(conf->sp);
-		conf->sp = copy;
+		copy = conf->pl->next;
+		free(conf->pl);
+		conf->pl = copy;
 	}
 }

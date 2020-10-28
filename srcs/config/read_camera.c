@@ -6,7 +6,7 @@
 /*   By: mmartin- <mmartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/16 22:18:24 by mmartin-          #+#    #+#             */
-/*   Updated: 2020/10/28 02:35:53 by mmartin-         ###   ########.fr       */
+/*   Updated: 2020/10/28 13:48:02 by mmartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,19 +15,19 @@
 #include <mlx.h>
 #include <stdlib.h>
 
-int			create_camera(t_conf *conf, char *str, void *mlx_ptr)
+t_camera	*create_camera(t_conf *conf, char *str, void *mlx_ptr)
 {
 	t_camera	cam;
 	char		**tab;
 	int			endian;
 
 	if (!(tab = ft_split(str, ' ')))
-		return (0);
+		return (NULL);
 	if (ft_split_count(tab) != 4 || ft_strcmp(*tab, "c"))
 	{
 		ft_split_free(tab);
 		g_errno = CONF_INV_FMT;
-		return (0);
+		return (NULL);
 	}
 	cam.img = mlx_new_image(mlx_ptr, SCREEN_WIDTH, SCREEN_HEIGHT);
 	cam.grid = (int *)mlx_get_data_addr(cam.img, &cam.bpp, &cam.sline, &endian);
@@ -38,7 +38,7 @@ int			create_camera(t_conf *conf, char *str, void *mlx_ptr)
 	cam.next = conf->c;
 	conf->c = ft_memdup(&cam, sizeof(t_camera));
 	ft_split_free(tab);
-	return (1);
+	return (conf->c);
 }
 
 t_camera	*get_camera(t_conf *conf, size_t index)
