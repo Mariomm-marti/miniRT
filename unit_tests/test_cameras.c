@@ -6,7 +6,7 @@
 /*   By: mmartin- <mmartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/25 22:50:52 by mmartin-          #+#    #+#             */
-/*   Updated: 2020/10/27 22:49:20 by mmartin-         ###   ########.fr       */
+/*   Updated: 2020/10/28 02:35:38 by mmartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,14 @@ int			main(int argc, char **argv)
 		system("leaks a.out");
 		return (1);
 	}
-	cam = get_camera(&config, 0);
-	if (!cam)
+	if ((cam = get_camera(&config, 100)))
 	{
-		printf("WTF\n");
+		printf("Shouldnt be printed bc error handling");
+		print_error();
+		free_cameras(&config, mlx_ptr);
 		return (1);
 	}
+	cam = get_camera(&config, 0);
 	if (g_errno)
 	{
 		print_error();

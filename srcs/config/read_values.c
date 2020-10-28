@@ -6,7 +6,7 @@
 /*   By: mmartin- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/16 01:17:01 by mmartin-          #+#    #+#             */
-/*   Updated: 2020/10/27 22:48:53 by mmartin-         ###   ########.fr       */
+/*   Updated: 2020/10/28 04:13:49 by mmartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static float	read_vec_val(char **str)
 	while (ft_isdigit(*(*str + 1)))
 		final = final * 10 + (*++*str - '0');
 	if (*++*str != '.')
-		return (final);
+		return (final * sign);
 	if (!ft_isdigit(*++*str))
 		return (!(g_errno = CONF_INV_FMT));
 	final = final * 10 + (**str - '0');
@@ -58,13 +58,13 @@ float			read_val(char *str, t_byte is_int)
 	if (is_int)
 		return (final * sign);
 	if (*str != '.')
-		return (!(g_errno = CONF_INV_NUM));
+		return (*str ? !(g_errno = CONF_INV_FMT) : final * sign);
 	if (!ft_isdigit(*++str))
 		return (!(g_errno = CONF_INV_FMT));
 	dec_pow = 10;
 	final = final * 10 + (*str - '0');
 	while (ft_isdigit(*(str + 1)) && (dec_pow *= 10))
-		final = final * 10 + (*str - '0');
+		final = final * 10 + (*++str - '0');
 	if (*++str)
 		return (!(g_errno = CONF_INV_FMT));
 	return (final / dec_pow * sign);

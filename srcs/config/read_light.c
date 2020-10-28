@@ -6,7 +6,7 @@
 /*   By: mmartin- <mmartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/27 19:23:28 by mmartin-          #+#    #+#             */
-/*   Updated: 2020/10/27 22:32:53 by mmartin-         ###   ########.fr       */
+/*   Updated: 2020/10/28 04:15:36 by mmartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,14 @@ int			create_light(t_conf *conf, char *str)
 	if (ft_split_count(tab) != 4 || ft_strcmp(*tab, "l"))
 	{
 		ft_split_free(tab);
-		g_errno = CONF_INV_FMT;
+		g_errno = CONF_INV_LIGHT;
 		return (0);
 	}
 	light.loc = read_vec(*(tab + 1), 0.0f, 0.0f);
-	light.ratio = read_val(*(tab + 2), 0);
+	if ((light.ratio = read_val(*(tab + 2), 0)) < 0.0f || light.ratio > 1.0f)
+		g_errno = CONF_INV_LIGHT;
 	light.color = read_color(*(tab + 3));
-	ligh.next = conf->l;
+	light.next = conf->l;
 	conf->l = ft_memdup(&light, sizeof(t_light));
 	ft_split_free(tab);
 	return (1);
