@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   read_square.c                                      :+:      :+:    :+:   */
+/*   read_triangle.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mmartin- <mmartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/10/29 22:35:12 by mmartin-          #+#    #+#             */
-/*   Updated: 2020/10/30 21:25:58 by mmartin-         ###   ########.fr       */
+/*   Created: 2020/10/30 21:27:48 by mmartin-          #+#    #+#             */
+/*   Updated: 2020/10/30 21:54:06 by mmartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,37 +14,36 @@
 #include <libft.h>
 #include <stdlib.h>
 
-t_square	*create_square(t_conf *conf, char *str)
+t_triangle	*create_triangle(t_conf *conf, char *str)
 {
-	t_square	square;
+	t_triangle	tr;
 	char		**tab;
 
 	if (!(tab = ft_split(str, ' ')))
 		return (NULL);
-	if (ft_split_count(tab) != 5 || ft_strcmp(*tab, "sq"))
+	if (ft_split_count(tab) != 5 || ft_strcmp(*tab, "tr"))
 	{
 		ft_split_free(tab);
-		g_errno = CONF_INV_SQUARE;
+		g_errno = CONF_INV_TRIANGLE;
 		return (NULL);
 	}
-	square.loc = read_vec(*(tab + 1), 0.0f, 0.0f);
-	square.dir = read_vec(*(tab + 2), 0.0f, 1.0f);
-	if ((square.side_size = read_val(*(tab + 3), 0)) < 0.1f)
-		g_errno = CONF_INV_SQUARE;
-	square.color = read_color(*(tab + 4));
-	square.next = conf->sq;
-	conf->sq = ft_memdup(&square, sizeof(t_square));
+	tr.a = read_vec(*(tab + 1), 0.0f, 0.0f);
+	tr.b = read_vec(*(tab + 2), 0.0f, 0.0f);
+	tr.c = read_vec(*(tab + 3), 0.0f, 0.0f);
+	tr.color = read_color(*(tab + 4));
+	tr.next = conf->tr;
+	conf->tr = ft_memdup(&tr, sizeof(t_triangle));
 	ft_split_free(tab);
-	return (conf->sq);
+	return (conf->tr);
 }
 
-t_square	*get_square(t_conf *conf, size_t index)
+t_triangle	*get_triangle(t_conf *conf, size_t index)
 {
 	size_t		count;
-	t_square	*ret;
+	t_triangle	*ret;
 
 	count = 1;
-	ret = conf->sq;
+	ret = conf->tr;
 	while (count <= index && ret)
 	{
 		ret = ret->next;
@@ -53,14 +52,14 @@ t_square	*get_square(t_conf *conf, size_t index)
 	return (ret);
 }
 
-void		free_squares(t_conf *conf)
+void		free_triangles(t_conf *conf)
 {
-	t_square	*copy;
+	t_triangle		*copy;
 
-	while (conf->sq)
+	while (conf->tr)
 	{
-		copy = conf->sq->next;
-		free(conf->sq);
-		conf->sq = copy;
+		copy = conf->tr->next;
+		free(conf->tr);
+		conf->tr = copy;
 	}
 }

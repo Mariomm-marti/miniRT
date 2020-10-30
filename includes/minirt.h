@@ -6,7 +6,7 @@
 /*   By: mmartin- <mmartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/01 19:03:31 by mmartin-          #+#    #+#             */
-/*   Updated: 2020/10/29 22:50:16 by mmartin-         ###   ########.fr       */
+/*   Updated: 2020/10/30 21:56:20 by mmartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,9 +124,9 @@ typedef struct		s_cylinder
 
 typedef struct		s_triangle
 {
-	struct s_vec		side_a;
-	struct s_vec		side_b;
-	struct s_vec		side_c;
+	struct s_vec		a;
+	struct s_vec		b;
+	struct s_vec		c;
 	t_color				color;
 	struct s_triangle	*next;
 }					t_triangle;
@@ -148,24 +148,6 @@ t_errcode			g_errno;
 
 void				print_error();
 
-float				read_val(char *str, t_byte is_int);
-t_vec				read_vec(char *str, float min, float max);
-t_color				read_color(char *str);
 
-t_camera			*create_camera(t_conf *conf, char *str, void *mlx_ptr);
-t_light				*create_light(t_conf *conf, char *str);
-t_sphere			*create_sphere(t_conf *conf, char *str);
-t_plane				*create_plane(t_conf *conf, char *str);
-t_square			*create_square(t_conf *conf, char *str);
-t_camera			*get_camera(t_conf *conf, size_t index);
-t_light				*get_light(t_conf *conf, size_t index);
-t_sphere			*get_sphere(t_conf *conf, size_t index);
-t_plane				*get_plane(t_conf *conf, size_t index);
-t_square			*get_square(t_conf *conf, size_t index);
-void				free_cameras(t_conf *conf, void *mlx_ptr);
-void				free_lights(t_conf *conf);
-void				free_spheres(t_conf *conf);
-void				free_planes(t_conf *conf);
-void				free_squares(t_conf *conf);
 
 #endif
