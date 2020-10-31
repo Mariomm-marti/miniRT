@@ -6,12 +6,14 @@
 /*   By: mmartin- <mmartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/30 21:56:24 by mmartin-          #+#    #+#             */
-/*   Updated: 2020/10/30 22:22:30 by mmartin-         ###   ########.fr       */
+/*   Updated: 2020/10/31 21:03:37 by mmartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CONFIG_H
 # define CONFIG_H
+
+# include "minirt.h"
 
 /*
 **	Basic getters for configuration values, exhaustive description

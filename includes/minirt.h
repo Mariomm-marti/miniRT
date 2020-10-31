@@ -6,7 +6,7 @@
 /*   By: mmartin- <mmartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/01 19:03:31 by mmartin-          #+#    #+#             */
-/*   Updated: 2020/10/30 21:56:20 by mmartin-         ###   ########.fr       */
+/*   Updated: 2020/10/31 22:02:45 by mmartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ enum							e_keycodes
 enum							e_errcodes
 {
 	CONF_MISSING = 0x1BDC6DB5339A5C7ULL,
+	CONF_MISSING_PARAM = 0x25D6D8DEE36D2EULL,
+	CONF_DUPPED_PARAM = 0x1BDC6D92B0DD82CULL,
 	CONF_INV_FMT = 0x1BDC6D8824D99B4ULL,
 	CONF_INV_RGB = 0x1BDC6D8824DC8E2ULL,
 	CONF_INV_NUM = 0x1BDC6D8824DBAADULL,
@@ -148,6 +150,6 @@ t_errcode			g_errno;
 
 void				print_error();
 
-
+int					read_config(t_conf *conf, char *path, void *mlx_ptr);
 
 #endif

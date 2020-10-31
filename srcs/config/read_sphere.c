@@ -6,11 +6,12 @@
 /*   By: mmartin- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/28 03:59:02 by mmartin-          #+#    #+#             */
-/*   Updated: 2020/10/28 14:00:14 by mmartin-         ###   ########.fr       */
+/*   Updated: 2020/10/31 21:01:58 by mmartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minirt.h"
+#include "../../includes/config.h"
 #include <libft.h>
 #include <stdlib.h>
 
