@@ -6,7 +6,7 @@
 /*   By: mmartin- <mmartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/31 20:56:07 by mmartin-          #+#    #+#             */
-/*   Updated: 2020/10/31 21:52:45 by mmartin-         ###   ########.fr       */
+/*   Updated: 2020/11/01 22:25:05 by mmartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,10 @@ int		main(int argc, char **argv)
 	if (g_errno)
 	{
 		print_error();
+		terminate_program(&conf, mlx_ptr);
 		return (1);
 	}
 	printf("EVERYTHING WENT OK\n");
+	terminate_program(&conf, mlx_ptr);
 	return (0);
 }

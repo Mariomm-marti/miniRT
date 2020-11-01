@@ -6,7 +6,7 @@
 /*   By: mmartin- <mmartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/01 19:03:31 by mmartin-          #+#    #+#             */
-/*   Updated: 2020/10/31 22:02:45 by mmartin-         ###   ########.fr       */
+/*   Updated: 2020/11/01 22:22:23 by mmartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,5 +151,6 @@ t_errcode			g_errno;
 void				print_error();
 
 int					read_config(t_conf *conf, char *path, void *mlx_ptr);
+void				terminate_program(t_conf *conf, void *mlx_ptr);
 
 #endif

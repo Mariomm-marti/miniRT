@@ -6,12 +6,14 @@
 /*   By: mmartin- <mmartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/02 17:37:33 by mmartin-          #+#    #+#             */
-/*   Updated: 2020/10/16 01:27:54 by mmartin-         ###   ########.fr       */
+/*   Updated: 2020/11/01 22:26:19 by mmartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <libft.h>
+#include <stdlib.h>
 #include "../includes/minirt.h"
+#include "../includes/config.h"
 
 /*
 **	DESCRIPTION
@@ -49,4 +51,28 @@ void	print_error()
 		if ((current = g_errno << mask >> 59))
 			ft_putchar_fd(current == 27 ? ' ' : (current | 96), 1);
 	ft_putchar_fd('\n', 1);
+}
+
+/*
+**	DESCRIPTION
+**		Takes configuration and a pointer to mlx, and free
+**		all elements in configuration
+**	RETURN VALUES
+**		None
+*/
+
+void	terminate_program(t_conf *conf, void *mlx_ptr)
+{
+	if (!conf)
+		return ;
+	free_cameras(conf, mlx_ptr);
+	free_lights(conf);
+	free_spheres(conf);
+	free_planes(conf);
+	free_squares(conf);
+	free_cylinders(conf);
+	free_triangles(conf);
+	// TODO remove it
+	system("leaks a.out");
+	exit(!!(g_errno));
 }
