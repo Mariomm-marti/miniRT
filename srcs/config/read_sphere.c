@@ -6,7 +6,7 @@
 /*   By: mmartin- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/28 03:59:02 by mmartin-          #+#    #+#             */
-/*   Updated: 2020/10/31 21:01:58 by mmartin-         ###   ########.fr       */
+/*   Updated: 2020/12/23 22:49:35 by mmartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ t_sphere	*create_sphere(t_conf *conf, char *str)
 		g_errno = CONF_INV_SPHERE;
 		return (NULL);
 	}
-	sphere.loc = read_vec(*(tab + 1), 0.0f, 0.0f);
+	read_vec(sphere.loc, *(tab + 1), 0.0f, 0.0f);
 	if ((sphere.diameter = read_val(*(tab + 2), 0)) < 0.1)
 		g_errno = CONF_INV_SPHERE;
 	sphere.color = read_color(*(tab + 3));

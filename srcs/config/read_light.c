@@ -6,7 +6,7 @@
 /*   By: mmartin- <mmartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/27 19:23:28 by mmartin-          #+#    #+#             */
-/*   Updated: 2020/10/31 21:01:49 by mmartin-         ###   ########.fr       */
+/*   Updated: 2020/12/23 22:48:56 by mmartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ t_light		*create_light(t_conf *conf, char *str)
 		g_errno = CONF_INV_LIGHT;
 		return (NULL);
 	}
-	light.loc = read_vec(*(tab + 1), 0.0f, 0.0f);
+	read_vec(light.loc, *(tab + 1), 0.0f, 0.0f);
 	if ((light.ratio = read_val(*(tab + 2), 0)) < 0.0f || light.ratio > 1.0f)
 		g_errno = CONF_INV_LIGHT;
 	light.color = read_color(*(tab + 3));

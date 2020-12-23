@@ -6,7 +6,7 @@
 /*   By: mmartin- <mmartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/01 19:03:31 by mmartin-          #+#    #+#             */
-/*   Updated: 2020/11/01 22:22:23 by mmartin-         ###   ########.fr       */
+/*   Updated: 2020/12/23 22:42:55 by mmartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # endif
 
 # include <libft.h>
+# include <libftmath.h>
 
 typedef unsigned long long int	t_errcode;
 typedef unsigned int			t_color;
@@ -50,13 +51,6 @@ enum							e_errcodes
 	CONF_INV_TRIANGLE = 0xDEE36C4126E92ULL
 };
 
-typedef struct		s_vec
-{
-	float				x;
-	float				y;
-	float				z;
-}					t_vec;
-
 typedef struct		s_res
 {
 	unsigned short		x;
@@ -75,15 +69,15 @@ typedef struct		s_camera
 	int					*grid;
 	int					bpp;
 	int					sline;
-	struct s_vec		loc;
-	struct s_vec		dir;
+	t_vec3				loc;
+	t_vec3				dir;
 	t_byte				fov;
 	struct s_camera		*next;
 }					t_camera;
 
 typedef struct		s_light
 {
-	struct s_vec		loc;
+	t_vec3				loc;
 	float				ratio;
 	t_color				color;
 	struct s_light		*next;
@@ -91,7 +85,7 @@ typedef struct		s_light
 
 typedef struct		s_sphere
 {
-	struct s_vec		loc;
+	t_vec3				loc;
 	float				diameter;
 	t_color				color;
 	struct s_sphere		*next;
@@ -99,16 +93,16 @@ typedef struct		s_sphere
 
 typedef struct		s_plane
 {
-	struct s_vec		loc;
-	struct s_vec		dir;
+	t_vec3				loc;
+	t_vec3				dir;
 	t_color				color;
 	struct s_plane		*next;
 }					t_plane;
 
 typedef struct		s_square
 {
-	struct s_vec		loc;
-	struct s_vec		dir;
+	t_vec3				loc;
+	t_vec3				dir;
 	float				side_size;
 	t_color				color;
 	struct s_square		*next;
@@ -116,8 +110,8 @@ typedef struct		s_square
 
 typedef struct		s_cylinder
 {
-	struct s_vec		loc;
-	struct s_vec		dir;
+	t_vec3				loc;
+	t_vec3				dir;
 	float				diameter;
 	float				height;
 	t_color				color;
@@ -126,9 +120,9 @@ typedef struct		s_cylinder
 
 typedef struct		s_triangle
 {
-	struct s_vec		a;
-	struct s_vec		b;
-	struct s_vec		c;
+	t_vec3				a;
+	t_vec3				b;
+	t_vec3				c;
 	t_color				color;
 	struct s_triangle	*next;
 }					t_triangle;

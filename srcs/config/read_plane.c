@@ -6,7 +6,7 @@
 /*   By: mmartin- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/28 14:04:33 by mmartin-          #+#    #+#             */
-/*   Updated: 2020/10/31 21:01:53 by mmartin-         ###   ########.fr       */
+/*   Updated: 2020/12/23 22:49:21 by mmartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@ t_plane		*create_plane(t_conf *conf, char *str)
 		g_errno = CONF_INV_PLANE;
 		return (NULL);
 	}
-	plane.loc = read_vec(*(tab + 1), 0.0f, 0.0f);
-	plane.dir = read_vec(*(tab + 2), 0.0f, 1.0f);
+	read_vec(plane.loc, *(tab + 1), 0.0f, 0.0f);
+	read_vec(plane.dir, *(tab + 2), 0.0f, 1.0f);
 	plane.color = read_color(*(tab + 3));
 	plane.next = conf->pl;
 	conf->pl = ft_memdup(&plane, sizeof(t_plane));

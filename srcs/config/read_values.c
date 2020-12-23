@@ -6,7 +6,7 @@
 /*   By: mmartin- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/16 01:17:01 by mmartin-          #+#    #+#             */
-/*   Updated: 2020/10/28 04:13:49 by mmartin-         ###   ########.fr       */
+/*   Updated: 2020/12/23 22:51:10 by mmartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,27 +70,25 @@ float			read_val(char *str, t_byte is_int)
 	return (final / dec_pow * sign);
 }
 
-t_vec			read_vec(char *str, float min, float max)
+void			read_vec(t_vec3 out, char *str, float min, float max)
 {
-	t_vec		out;
 	char		*dup;
-	
+
 	dup = ft_strdup(str);
 	str = dup;
-	out.x = read_vec_val(&dup);
+	out[0] = read_vec_val(&dup);
 	if (*dup++ != ',')
 		g_errno = CONF_INV_FMT;
-	out.y = read_vec_val(&dup);
+	out[1] = read_vec_val(&dup);
 	if (*dup++ != ',')
 		g_errno = CONF_INV_FMT;
-	out.z = read_vec_val(&dup);
+	out[2] = read_vec_val(&dup);
 	if (*dup++)
 		g_errno = CONF_INV_FMT;
-	if (min != max && (out.x < min || out.x > max || out.y < min ||
-				out.y > max || out.z < min || out.z > max))
+	if (min != max && (out[0] < min || out[0] > max || out[1] < min ||
+				out[1] > max || out[2] < min || out[2] > max))
 		g_errno = CONF_INV_NUM;
 	free(str);
-	return (out);
 }
 
 t_color			read_color(char *str)

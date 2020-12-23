@@ -6,7 +6,7 @@
 /*   By: mmartin- <mmartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/02 17:37:33 by mmartin-          #+#    #+#             */
-/*   Updated: 2020/11/01 22:26:19 by mmartin-         ###   ########.fr       */
+/*   Updated: 2020/11/04 20:05:00 by mmartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@
 **		None
 */
 
-void	print_error()
+void	print_error(void)
 {
 	char	mask;
 	char	current;

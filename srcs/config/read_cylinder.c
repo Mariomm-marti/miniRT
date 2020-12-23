@@ -6,7 +6,7 @@
 /*   By: mmartin- <mmartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/30 20:33:38 by mmartin-          #+#    #+#             */
-/*   Updated: 2020/10/31 21:01:45 by mmartin-         ###   ########.fr       */
+/*   Updated: 2020/12/23 22:48:40 by mmartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@ t_cylinder	*create_cylinder(t_conf *conf, char *str)
 		g_errno = CONF_INV_CYLINDER;
 		return (NULL);
 	}
-	cyl.loc = read_vec(*(tab + 1), 0.0f, 0.0f);
-	cyl.dir = read_vec(*(tab + 2), 0.0f, 1.0f);
+	read_vec(cyl.loc, *(tab + 1), 0.0f, 0.0f);
+	read_vec(cyl.dir, *(tab + 2), 0.0f, 1.0f);
 	if ((cyl.diameter = read_val(*(tab + 3), 0)) < 0.1f)
 		g_errno = CONF_INV_NUM;
 	if ((cyl.height = read_val(*(tab + 4), 0)) < 0.1f)

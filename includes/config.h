@@ -6,7 +6,7 @@
 /*   By: mmartin- <mmartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/30 21:56:24 by mmartin-          #+#    #+#             */
-/*   Updated: 2020/10/31 21:03:37 by mmartin-         ###   ########.fr       */
+/*   Updated: 2020/12/23 22:45:46 by mmartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 */
 
 float				read_val(char *str, t_byte is_int);
-t_vec				read_vec(char *str, float min, float max);
+void				read_vec(t_vec3 out, char *str, float min, float max);
 t_color				read_color(char *str);
 
 /*

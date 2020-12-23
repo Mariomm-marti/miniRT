@@ -6,7 +6,7 @@
 /*   By: mmartin- <mmartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/29 22:35:12 by mmartin-          #+#    #+#             */
-/*   Updated: 2020/10/31 21:02:03 by mmartin-         ###   ########.fr       */
+/*   Updated: 2020/12/23 22:49:51 by mmartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@ t_square	*create_square(t_conf *conf, char *str)
 		g_errno = CONF_INV_SQUARE;
 		return (NULL);
 	}
-	square.loc = read_vec(*(tab + 1), 0.0f, 0.0f);
-	square.dir = read_vec(*(tab + 2), 0.0f, 1.0f);
+	read_vec(square.loc, *(tab + 1), 0.0f, 0.0f);
+	read_vec(square.dir, *(tab + 2), 0.0f, 1.0f);
 	if ((square.side_size = read_val(*(tab + 3), 0)) < 0.1f)
 		g_errno = CONF_INV_SQUARE;
 	square.color = read_color(*(tab + 4));

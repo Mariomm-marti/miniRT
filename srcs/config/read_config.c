@@ -6,7 +6,7 @@
 /*   By: mmartin- <mmartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/30 22:27:34 by mmartin-          #+#    #+#             */
-/*   Updated: 2020/10/31 22:03:14 by mmartin-         ###   ########.fr       */
+/*   Updated: 2020/12/23 22:36:08 by mmartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,22 +25,18 @@ static t_res	get_resolution(char *str, t_byte *code)
 	if ((*code & 1) || !(tab = ft_split(str, ' ')))
 	{
 		g_errno = CONF_DUPPED_PARAM;
-		return (res);
+		return ((t_res){0, 0});
 	}
 	if (ft_split_count(tab) != 3 || ft_strcmp(*tab, "R"))
 	{
 		ft_split_free(tab);
 		*code = *code | 1;
 		g_errno = CONF_INV_RES;
-		return (res);
+		return ((t_res){0, 0});
 	}
-	if ((res.x = read_val(*(tab + 1), 1)) < 960)
-		res.x = 960;
-	if (res.x > SCREEN_WIDTH)
+	if ((res.x = read_val(*(tab + 1), 1)) < 960 || res.x > SCREEN_WIDTH)
 		res.x = SCREEN_WIDTH;
-	if ((res.y = read_val(*(tab + 2), 1)) < 540)
-		res.y = 540;
-	if (res.y > SCREEN_HEIGHT)
+	if ((res.y = read_val(*(tab + 2), 1)) < 540 || res.y > SCREEN_HEIGHT)
 		res.y = SCREEN_HEIGHT;
 	ft_split_free(tab);
 	*code = *code | 1;
@@ -55,14 +51,14 @@ static t_amb	get_ambient(char *str, t_byte *code)
 	if ((*code & 2) || !(tab = ft_split(str, ' ')))
 	{
 		g_errno = CONF_DUPPED_PARAM;
-		return (amb);
+		return ((t_amb){0.0, 0});
 	}
 	if (ft_split_count(tab) != 3 || ft_strcmp(*tab, "A"))
 	{
 		ft_split_free(tab);
 		g_errno = CONF_INV_AMB;
 		*code = *code | 2;
-		return (amb);
+		return ((t_amb){0.0, 0});
 	}
 	if ((amb.ratio = read_val(*(tab + 1), 0)) < 0.0f || amb.ratio > 1.0f)
 		g_errno = CONF_INV_AMB;
