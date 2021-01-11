@@ -6,7 +6,7 @@
 /*   By: mmartin- <mmartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/01 19:03:31 by mmartin-          #+#    #+#             */
-/*   Updated: 2020/12/23 22:42:55 by mmartin-         ###   ########.fr       */
+/*   Updated: 2020/12/31 16:45:50 by mmartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,10 @@ enum							e_errcodes
 	CONF_INV_PLANE = 0xDEE36C4126E0CULL,
 	CONF_INV_SQUARE = 0xDEE36C4126E71ULL,
 	CONF_INV_CYLINDER = 0xDEE36C4126C79ULL,
-	CONF_INV_TRIANGLE = 0xDEE36C4126E92ULL
+	CONF_INV_TRIANGLE = 0xDEE36C4126E92ULL,
+	EXEC_INV_ARG = 0x4AAED8824D8647ULL,
+	EXEC_INV_FNAME = 0x955DB1049B705A5ULL,
+	EXEC_INTERNAL_MLX = 0xD66365949F2ULL
 };
 
 typedef struct		s_res
