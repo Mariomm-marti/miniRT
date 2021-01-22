@@ -6,7 +6,7 @@
 /*   By: mmartin- <mmartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/16 22:18:24 by mmartin-          #+#    #+#             */
-/*   Updated: 2020/12/23 22:46:52 by mmartin-         ###   ########.fr       */
+/*   Updated: 2021/01/21 18:13:37 by mmartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,8 @@ t_camera	*create_camera(t_conf *conf, char *str, void *mlx_ptr)
 		return (NULL);
 	}
 	cam.img = mlx_new_image(mlx_ptr, SCREEN_WIDTH, SCREEN_HEIGHT);
-	cam.grid = (int *)mlx_get_data_addr(cam.img, &cam.bpp, &cam.sline, &endian);
+	cam.grid = (t_color *)mlx_get_data_addr(cam.img,
+					&cam.bpp, &cam.sline, &endian);
 	read_vec(cam.loc, *(tab + 1), 0.0f, 0.0f);
 	read_vec(cam.dir, *(tab + 2), 0.0f, 1.0f);
 	if ((cam.fov = read_val(*(tab + 3), 1)) < 0 || cam.fov > 180)

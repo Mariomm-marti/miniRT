@@ -6,12 +6,12 @@
 /*   By: mmartin- <mmartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/31 15:18:44 by mmartin-          #+#    #+#             */
-/*   Updated: 2021/01/07 21:24:29 by mmartin-         ###   ########.fr       */
+/*   Updated: 2021/01/21 20:04:19 by mmartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minirt.h"
-#include <unistd.h>
+#include <libft.h>
 #include <mlx.h>
 
 static int	validate_args(int argc, char **argv)
@@ -31,6 +31,7 @@ int			main(int argc, char **argv)
 {
 	t_conf	conf;
 	void	*mlxptr;
+	void	*mlxwin;
 
 	ft_bzero(&conf, sizeof(t_conf));
 	if (validate_args(argc, argv) || !(mlxptr = mlx_init()))
@@ -39,6 +40,8 @@ int			main(int argc, char **argv)
 		return (0);
 	}
 	read_config(&conf, *(argv + 1), mlxptr);
-//	// 
+//	if (!(mlxwin = mlx_new_window(mlxptr, conf.r.x, conf.r.y, "miniRT")))
+//		return (0);
+	render_cameras(conf);
 	terminate_program(&conf, mlxptr);
 }
