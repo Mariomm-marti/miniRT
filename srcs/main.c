@@ -6,7 +6,7 @@
 /*   By: mmartin- <mmartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/31 15:18:44 by mmartin-          #+#    #+#             */
-/*   Updated: 2021/01/21 20:04:19 by mmartin-         ###   ########.fr       */
+/*   Updated: 2021/01/23 20:47:01 by mmartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ int			main(int argc, char **argv)
 {
 	t_conf	conf;
 	void	*mlxptr;
-	void	*mlxwin;
 
 	ft_bzero(&conf, sizeof(t_conf));
 	if (validate_args(argc, argv) || !(mlxptr = mlx_init()))
@@ -42,6 +41,6 @@ int			main(int argc, char **argv)
 	read_config(&conf, *(argv + 1), mlxptr);
 //	if (!(mlxwin = mlx_new_window(mlxptr, conf.r.x, conf.r.y, "miniRT")))
 //		return (0);
-	render_cameras(conf);
+	render_cameras(&conf);
 	terminate_program(&conf, mlxptr);
 }

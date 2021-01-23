@@ -6,7 +6,7 @@
 /*   By: mmartin- <mmartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/01 19:03:31 by mmartin-          #+#    #+#             */
-/*   Updated: 2021/01/23 01:44:47 by mmartin-         ###   ########.fr       */
+/*   Updated: 2021/01/23 20:11:53 by mmartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,10 @@
 
 # ifndef SCREEN_HEIGHT
 #  define SCREEN_HEIGHT 1080
+# endif
+
+# ifndef DEG_RAD
+#  define DEG_RAD 0.01745329251994329576923690768488f
 # endif
 
 # include <libft.h>
@@ -151,6 +155,6 @@ int					read_config(t_conf *conf, char *path, void *mlx_ptr);
 void				terminate_program(t_conf *conf, void *mlx_ptr);
 
 void				lookat(t_mat44 out, t_vec3 const from, t_vec3 const to);
-void				render_cameras(t_conf const *conf, void *mlxptr);
+void				render_cameras(t_conf const *conf);
 
 #endif
