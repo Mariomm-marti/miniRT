@@ -6,7 +6,7 @@
 /*   By: mmartin- <mmartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/01 19:03:31 by mmartin-          #+#    #+#             */
-/*   Updated: 2021/01/24 01:21:34 by mmartin-         ###   ########.fr       */
+/*   Updated: 2021/01/24 19:38:52 by mmartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 # endif
 
 # ifndef DEG_RAD
-#  define DEG_RAD 0.01745329251994329576923690768488f
+#  define DEG_RAD 0.017453292519943295f
 # endif
 
 # include <libft.h>
@@ -93,7 +93,7 @@ typedef struct		s_light
 typedef struct		s_sphere
 {
 	t_vec3				loc;
-	double				diameter;
+	double				radius;
 	t_color				color;
 	struct s_sphere		*next;
 }					t_sphere;
@@ -146,6 +146,14 @@ typedef struct		s_conf
 	struct s_cylinder	*cy;
 	struct s_triangle	*tr;
 }					t_conf;
+
+typedef struct		s_ray
+{
+	t_vec3				holy_vector;
+	t_vec3				ray;
+	double				dist;
+	t_color				color;
+}					t_ray;
 
 t_errcode			g_errno;
 

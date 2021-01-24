@@ -6,7 +6,7 @@
 /*   By: mmartin- <mmartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/02 17:37:33 by mmartin-          #+#    #+#             */
-/*   Updated: 2021/01/07 21:24:56 by mmartin-         ###   ########.fr       */
+/*   Updated: 2021/01/24 18:39:12 by mmartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void	print_error(void)
 void	terminate_program(t_conf *conf, void *mlx_ptr)
 {
 	if (!conf || !mlx_ptr)
-		exit(!!(g_errno));
+		exit(!!g_errno);
 	free_cameras(conf, mlx_ptr);
 	free_lights(conf);
 	free_spheres(conf);

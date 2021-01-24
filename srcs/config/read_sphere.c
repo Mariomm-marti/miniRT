@@ -6,7 +6,7 @@
 /*   By: mmartin- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/28 03:59:02 by mmartin-          #+#    #+#             */
-/*   Updated: 2020/12/23 22:49:35 by mmartin-         ###   ########.fr       */
+/*   Updated: 2021/01/24 19:15:44 by mmartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,9 @@ t_sphere	*create_sphere(t_conf *conf, char *str)
 		return (NULL);
 	}
 	read_vec(sphere.loc, *(tab + 1), 0.0f, 0.0f);
-	if ((sphere.diameter = read_val(*(tab + 2), 0)) < 0.1)
+	if ((sphere.radius = read_val(*(tab + 2), 0)) < 0.1)
 		g_errno = CONF_INV_SPHERE;
+	sphere.radius = sphere.radius / 2;
 	sphere.color = read_color(*(tab + 3));
 	sphere.next = conf->sp;
 	conf->sp = ft_memdup(&sphere, sizeof(t_sphere));

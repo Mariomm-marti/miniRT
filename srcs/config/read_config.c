@@ -6,12 +6,13 @@
 /*   By: mmartin- <mmartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/30 22:27:34 by mmartin-          #+#    #+#             */
-/*   Updated: 2020/12/23 22:36:08 by mmartin-         ###   ########.fr       */
+/*   Updated: 2021/01/24 20:06:48 by mmartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/config.h"
 #include "../../includes/minirt.h"
+#include <stdio.h> //
 #include <get_next_line.h>
 #include <stdlib.h>
 #include <fcntl.h>

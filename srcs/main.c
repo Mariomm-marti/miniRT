@@ -6,11 +6,12 @@
 /*   By: mmartin- <mmartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/31 15:18:44 by mmartin-          #+#    #+#             */
-/*   Updated: 2021/01/23 20:47:01 by mmartin-         ###   ########.fr       */
+/*   Updated: 2021/01/24 20:39:57 by mmartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minirt.h"
+#include <stdio.h>
 #include <libft.h>
 #include <mlx.h>
 
@@ -24,23 +25,31 @@ static int	validate_args(int argc, char **argv)
 		g_errno = EXEC_INV_FNAME;
 	else if (argc == 3 && ft_strcmp("--save", *(argv + 2)))
 		g_errno = EXEC_INV_ARG;
-	return (!!g_errno);
+	return (!g_errno);
 }
 
 int			main(int argc, char **argv)
 {
 	t_conf	conf;
 	void	*mlxptr;
+	void	*mlxwin;
 
 	ft_bzero(&conf, sizeof(t_conf));
-	if (validate_args(argc, argv) || !(mlxptr = mlx_init()))
+	if (!validate_args(argc, argv))
 	{
 		print_error();
 		return (0);
 	}
-	read_config(&conf, *(argv + 1), mlxptr);
-//	if (!(mlxwin = mlx_new_window(mlxptr, conf.r.x, conf.r.y, "miniRT")))
-//		return (0);
+	mlxptr = mlx_init();
+	if (!read_config(&conf, *(argv + 1), mlxptr) || g_errno)
+ 	{
+		print_error();
+		terminate_program(&conf, mlxptr);
+	}
+	if (!(mlxwin = mlx_new_window(mlxptr, conf.r.x, conf.r.y, "miniRT")))
+		terminate_program(&conf, mlxptr);
 	render_cameras(&conf);
-	terminate_program(&conf, mlxptr);
+	mlx_put_image_to_window(mlxptr, mlxwin, conf.c->img, 0, 0);
+	mlx_loop(mlxptr);
+//	terminate_program(&conf, mlxptr);
 }
