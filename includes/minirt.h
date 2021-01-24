@@ -6,7 +6,7 @@
 /*   By: mmartin- <mmartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/01 19:03:31 by mmartin-          #+#    #+#             */
-/*   Updated: 2021/01/23 20:11:53 by mmartin-         ###   ########.fr       */
+/*   Updated: 2021/01/24 01:21:34 by mmartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ typedef struct		s_res
 
 typedef struct		s_amb
 {
-	float				ratio;
+	double				ratio;
 	t_color				color;
 }					t_amb;
 
@@ -85,7 +85,7 @@ typedef struct		s_camera
 typedef struct		s_light
 {
 	t_vec3				loc;
-	float				ratio;
+	double				ratio;
 	t_color				color;
 	struct s_light		*next;
 }					t_light;
@@ -93,7 +93,7 @@ typedef struct		s_light
 typedef struct		s_sphere
 {
 	t_vec3				loc;
-	float				diameter;
+	double				diameter;
 	t_color				color;
 	struct s_sphere		*next;
 }					t_sphere;
@@ -110,7 +110,7 @@ typedef struct		s_square
 {
 	t_vec3				loc;
 	t_vec3				dir;
-	float				side_size;
+	double				side_size;
 	t_color				color;
 	struct s_square		*next;
 }					t_square;
@@ -119,8 +119,8 @@ typedef struct		s_cylinder
 {
 	t_vec3				loc;
 	t_vec3				dir;
-	float				diameter;
-	float				height;
+	double				diameter;
+	double				height;
 	t_color				color;
 	struct s_cylinder	*next;
 }					t_cylinder;
