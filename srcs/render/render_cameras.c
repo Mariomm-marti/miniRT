@@ -6,7 +6,7 @@
 /*   By: mmartin- <mmartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 17:32:02 by mmartin-          #+#    #+#             */
-/*   Updated: 2021/01/24 20:42:23 by mmartin-         ###   ########.fr       */
+/*   Updated: 2021/01/24 21:21:24 by mmartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,16 @@
 #include <stdio.h> //
 #include <libftmath.h>
 #include <math.h>
+
+// TODO poner donde la lectura de camaras xd
+static void		write_into_image(t_camera *cam, unsigned short px,
+		unsigned short py, unsigned int color)
+{
+    char    *casting;
+
+    casting = (char *)cam->grid + (py * cam->sline + px * (cam->bpp / 8));
+    *(unsigned int*)casting = color;
+}
 
 static void		ray_generic(t_vec3 g, t_res const *dim,
 		t_mat44 const ctw, t_byte const fov)
@@ -30,12 +40,12 @@ static void		ray_generic(t_vec3 g, t_res const *dim,
 }
 
 static void		ray_specific(t_mat44 const ctw, t_vec3 ray,
-		t_vec3 const holy_vector, t_res const *pixel)
+		t_vec3 const holy_vector, unsigned int const x, unsigned int const y)
 {
-	vec3_mult(ray, (t_vec3){ctw[0][0], ctw[0][1], ctw[0][2]}, pixel->x);
-	vec3_add(ray, (t_vec3){-ctw[1][0] * pixel->y,
-			-ctw[1][1] * pixel->y,
-			-ctw[1][2] * pixel->y}, ray);
+	vec3_mult(ray, (t_vec3){ctw[0][0], ctw[0][1], ctw[0][2]}, x);
+	vec3_add(ray, (t_vec3){-ctw[1][0] * y,
+			-ctw[1][1] * y,
+			-ctw[1][2] * y}, ray);
 	vec3_add(ray, holy_vector, ray);
 	vec3_normalize(ray, ray);
 }
@@ -70,27 +80,30 @@ static t_sphere	*intersect_sphere(t_sphere const *sp,
 	return (NULL);
 }
 
-static void		render_camera(t_camera const *cam, t_conf const *conf)
+static void		render_camera(t_camera *cam, t_conf const *conf)
 {
 	t_mat44			ctw;
 	t_ray			ray;
-	t_res			pixel;
+	unsigned int	x;
+	unsigned int	y;
 
 	ft_bzero(&ray, sizeof(t_ray));
 	ray.dist = INFINITY;
 	lookat(ctw, cam->loc, cam->dir);
 	ray_generic(ray.holy_vector, &(conf->r), ctw, cam->fov);
-	pixel = (t_res){.x = 0, .y = 0};
-	while (pixel.x < conf->r.x)
+	x = 0;
+	while (x < conf->r.x)
 	{
-		while (pixel.y < conf->r.y)
+		y = 0;
+		while (y < conf->r.y)
 		{
-			ray_specific(ctw, ray.ray, ray.holy_vector, &pixel);
+			ray.dist = INFINITY;
+			ray_specific(ctw, ray.ray, ray.holy_vector, x, y);
 			if (intersect_sphere(conf->sp, cam, &ray))
-				*(cam->grid + (pixel.y * cam->sline + pixel.x * (cam->bpp / 8))) = ray.color;
-			pixel.y++;
+				write_into_image(cam, x, y, ray.color);
+			y += 1;
 		}
-		pixel.x++;
+		x += 1;
 	}
 }
 

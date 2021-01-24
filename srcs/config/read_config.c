@@ -6,7 +6,7 @@
 /*   By: mmartin- <mmartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/30 22:27:34 by mmartin-          #+#    #+#             */
-/*   Updated: 2021/01/24 20:06:48 by mmartin-         ###   ########.fr       */
+/*   Updated: 2021/01/24 21:03:33 by mmartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,7 @@ static int		setup_line(t_conf *conf, t_byte *code, char *str, void *mlx_ptr)
 	return (1);
 }
 
+// TODO Asegurarme de leer R y A primero porque si no C crea mlximage peque~na
 int				read_config(t_conf *conf, char *path, void *mlx_ptr)
 {
 	t_byte		code;

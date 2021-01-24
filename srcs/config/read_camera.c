@@ -6,7 +6,7 @@
 /*   By: mmartin- <mmartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/16 22:18:24 by mmartin-          #+#    #+#             */
-/*   Updated: 2021/01/24 20:39:49 by mmartin-         ###   ########.fr       */
+/*   Updated: 2021/01/24 21:00:30 by mmartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include <libft.h>
 #include <mlx.h>
 #include <stdlib.h>
+#include <stdio.h> //
 
 t_camera	*create_camera(t_conf *conf, char *str, void *mlx_ptr)
 {
