@@ -6,7 +6,7 @@
 /*   By: mmartin- <mmartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 17:32:02 by mmartin-          #+#    #+#             */
-/*   Updated: 2021/01/24 21:21:24 by mmartin-         ###   ########.fr       */
+/*   Updated: 2021/01/25 20:48:31 by mmartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,16 +15,6 @@
 #include <stdio.h> //
 #include <libftmath.h>
 #include <math.h>
-
-// TODO poner donde la lectura de camaras xd
-static void		write_into_image(t_camera *cam, unsigned short px,
-		unsigned short py, unsigned int color)
-{
-    char    *casting;
-
-    casting = (char *)cam->grid + (py * cam->sline + px * (cam->bpp / 8));
-    *(unsigned int*)casting = color;
-}
 
 static void		ray_generic(t_vec3 g, t_res const *dim,
 		t_mat44 const ctw, t_byte const fov)
@@ -50,71 +40,72 @@ static void		ray_specific(t_mat44 const ctw, t_vec3 ray,
 	vec3_normalize(ray, ray);
 }
 
-static t_sphere	*intersect_sphere(t_sphere const *sp,
-		t_camera const *cam, t_ray *ray)
+static t_bool	intersect_plane(t_camera const *cam,
+		t_plane const *plane, t_ray *ray)
 {
-	t_vec3 register	vec_origsp;
-	double register	proj_origsp;
-	double register	proj_intsp;
-	double register	close_inter;
+	double	det;
+	double	t;
+	t_vec3	planenormal;
+	t_vec3	planeray;
 
-	vec3_sub(vec_origsp, sp->loc, cam->loc);
-	proj_origsp = vec3_dot(vec_origsp, ray->ray);
-	if (proj_origsp < 0.0f)
-		return (NULL);
-	proj_intsp = vec3_dot(vec_origsp, vec_origsp);
-	proj_intsp -= proj_origsp * proj_origsp;
-	if (proj_intsp > sp->radius * sp->radius)
-		return (NULL);
-	proj_intsp = sqrt(sp->radius * sp->radius - proj_intsp);
-	if (proj_origsp - proj_intsp < 0 && proj_origsp + proj_intsp < 0)
-		return (NULL);
-	if((close_inter = proj_origsp + proj_intsp) > proj_origsp - proj_intsp)
-		close_inter = proj_origsp - proj_intsp;
-	if (close_inter < ray->dist)
+	vec3_normalize(planenormal, plane->dir);
+	det = vec3_dot(planenormal, ray->ray);
+	if (det == 0.0f)
+		return (0);
+	vec3_sub(planeray, plane->loc, cam->loc);
+	if ((t = vec3_dot(planeray, plane->dir) / det) < 0)
+		return (0);
+	if (t < ray->dist)
 	{
-		ray->dist = close_inter;
-		ray->color = sp->color;
-		return ((t_sphere *)sp);
+		ray->dist = t;
+		ray->color = plane->color;
 	}
-	return (NULL);
+	return (1);
 }
 
-static void		render_camera(t_camera *cam, t_conf const *conf)
+static t_bool	intersect_planes(t_camera const *cam,
+		t_plane const *plane, t_ray *ray)
+{
+	t_bool	ret;
+
+	ret = 0;
+	while (plane)
+	{
+		ret |= intersect_plane(cam, plane, ray);
+		plane = plane->next;
+	}
+	return (ret);
+}
+
+void			render_cameras(t_camera const *cam, t_conf const *conf)
 {
 	t_mat44			ctw;
 	t_ray			ray;
-	unsigned int	x;
-	unsigned int	y;
+	unsigned short	x;
+	unsigned short	y;
 
-	ft_bzero(&ray, sizeof(t_ray));
-	ray.dist = INFINITY;
 	lookat(ctw, cam->loc, cam->dir);
+	ray.dist = INFINITY;
 	ray_generic(ray.holy_vector, &(conf->r), ctw, cam->fov);
-	x = 0;
-	while (x < conf->r.x)
+	while (cam)
 	{
-		y = 0;
-		while (y < conf->r.y)
+		x = 0;
+		while (x < conf->r.x)
 		{
-			ray.dist = INFINITY;
-			ray_specific(ctw, ray.ray, ray.holy_vector, x, y);
-			if (intersect_sphere(conf->sp, cam, &ray))
-				write_into_image(cam, x, y, ray.color);
-			y += 1;
+			y = 0;
+			while (y < conf->r.y)
+			{
+				ray.dist = INFINITY;
+				ray_specific(ctw, ray.ray, ray.holy_vector, x, y);
+				if (intersect_planes(cam, conf->pl, &ray))
+				{
+					*((unsigned int *)((char *) cam->grid + (y * cam->sline + x * (cam->bpp) / 8))) = ray.color;
+					printf("Intersected ray %lf %lf %lf", ray.ray[0], ray.ray[1], ray.ray[2]);
+				}
+				y++;
+			}
+			x++;
 		}
-		x += 1;
-	}
-}
-
-void		render_cameras(t_conf const *conf)
-{
-	t_camera	*cur;
-
-	cur = conf->c;
-	while (cur)
-	{
-		render_camera(cur, conf);
-		cur = cur->next;
+		cam = cam->next;
 	}
 }

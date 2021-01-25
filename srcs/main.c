@@ -6,7 +6,7 @@
 /*   By: mmartin- <mmartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/31 15:18:44 by mmartin-          #+#    #+#             */
-/*   Updated: 2021/01/24 21:06:34 by mmartin-         ###   ########.fr       */
+/*   Updated: 2021/01/25 20:27:23 by mmartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,8 @@ int			main(int argc, char **argv)
 	}
 	if (!(mlxwin = mlx_new_window(mlxptr, conf.r.x, conf.r.y, "miniRT")))
 		terminate_program(&conf, mlxptr);
-	render_cameras(&conf);
+	render_cameras(conf.c, &conf);
 	mlx_put_image_to_window(mlxptr, mlxwin, conf.c->img, 0, 0);
 	mlx_loop(mlxptr);
-//	terminate_program(&conf, mlxptr);
+	terminate_program(&conf, mlxptr);
 }

@@ -6,7 +6,7 @@
 /*   By: mmartin- <mmartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/01 19:03:31 by mmartin-          #+#    #+#             */
-/*   Updated: 2021/01/24 19:38:52 by mmartin-         ###   ########.fr       */
+/*   Updated: 2021/01/25 20:24:10 by mmartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@
 
 typedef unsigned long long int	t_errcode;
 typedef unsigned int			t_color;
+typedef unsigned char			t_bool;
 
 enum							e_keycodes
 {
@@ -163,6 +164,6 @@ int					read_config(t_conf *conf, char *path, void *mlx_ptr);
 void				terminate_program(t_conf *conf, void *mlx_ptr);
 
 void				lookat(t_mat44 out, t_vec3 const from, t_vec3 const to);
-void				render_cameras(t_conf const *conf);
+void				render_cameras(t_camera const *cam, t_conf const *conf);
 
 #endif
