@@ -6,13 +6,14 @@
 /*   By: mmartin- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/28 14:04:33 by mmartin-          #+#    #+#             */
-/*   Updated: 2021/01/24 18:14:27 by mmartin-         ###   ########.fr       */
+/*   Updated: 2021/01/26 20:08:05 by mmartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minirt.h"
 #include "../../includes/config.h"
 #include <libft.h>
+#include <libftmath.h>
 #include <stdlib.h>
 
 t_plane		*create_plane(t_conf *conf, char *str)
@@ -30,6 +31,7 @@ t_plane		*create_plane(t_conf *conf, char *str)
 	}
 	read_vec(plane.loc, *(tab + 1), 0.0f, 0.0f);
 	read_vec(plane.dir, *(tab + 2), -1.0f, 1.0f);
+	vec3_normalize(plane.dir, plane.dir);
 	plane.color = read_color(*(tab + 3));
 	plane.next = conf->pl;
 	conf->pl = ft_memdup(&plane, sizeof(t_plane));

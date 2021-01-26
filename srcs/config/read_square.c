@@ -6,13 +6,14 @@
 /*   By: mmartin- <mmartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/29 22:35:12 by mmartin-          #+#    #+#             */
-/*   Updated: 2021/01/24 18:16:23 by mmartin-         ###   ########.fr       */
+/*   Updated: 2021/01/26 20:09:00 by mmartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minirt.h"
 #include "../../includes/config.h"
 #include <libft.h>
+#include <libftmath.h>
 #include <stdlib.h>
 
 t_square	*create_square(t_conf *conf, char *str)
@@ -30,6 +31,7 @@ t_square	*create_square(t_conf *conf, char *str)
 	}
 	read_vec(square.loc, *(tab + 1), 0.0f, 0.0f);
 	read_vec(square.dir, *(tab + 2), -1.0f, 1.0f);
+	vec3_normalize(square.dir, square.dir);
 	if ((square.side_size = read_val(*(tab + 3), 0)) < 0.1f)
 		g_errno = CONF_INV_SQUARE;
 	square.color = read_color(*(tab + 4));

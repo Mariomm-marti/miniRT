@@ -6,13 +6,11 @@
 /*   By: mmartin- <mmartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 17:32:02 by mmartin-          #+#    #+#             */
-/*   Updated: 2021/01/26 19:21:02 by mmartin-         ###   ########.fr       */
+/*   Updated: 2021/01/26 20:47:12 by mmartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minirt.h"
-#include <stdlib.h> //
-#include <stdio.h> //
 #include <libftmath.h>
 #include <math.h>
 
@@ -62,24 +60,22 @@ static int		intersect_spheres(t_camera const *cam,
 {
 	t_vec3	pc;
 	double	ppcr;
-	double	dpc;
-	double	delfin;
-	double	seg;
-	double	t;
+	double	dfn;
 
+	if (!sp)
+		return (0);
 	vec3_sub(pc, sp->loc, cam->loc);
 	ppcr = vec3_dot(pc, ray->ray);
-	dpc = vec3_dot(pc, pc); // squared, sqrt(dpc) == len
-	delfin = dpc - ppcr * ppcr;
-	if (delfin > sp->radius * sp->radius)
-		return (0);
-	seg = sqrt(sp->radius * sp->radius - delfin);
-	t = ppcr - seg < ppcr + seg && ppcr - seg > 0 ? ppcr - seg : ppcr + seg;
-	if (t > ray->dist || t <= 0)
-		return (0);
-	ray->dist = t;
+	dfn = vec3_dot(pc, pc) - ppcr * ppcr;
+	if (dfn > sp->radius * sp->radius)
+		return (0 + intersect_spheres(cam, sp->next, ray));
+	dfn = sqrt(sp->radius * sp->radius - dfn);
+	dfn = ppcr - dfn < ppcr + dfn && ppcr - dfn > 0 ? ppcr - dfn : ppcr + dfn;
+	if (dfn > ray->dist || dfn <= 0)
+		return (0 + intersect_spheres(cam, sp->next, ray));
+	ray->dist = dfn;
 	ray->color = sp->color;
-	return (1);
+	return (1 + intersect_spheres(cam, sp->next, ray));
 }
 
 void			render_cameras(t_camera const *cam, t_conf const *conf)
