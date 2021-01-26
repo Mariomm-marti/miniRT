@@ -6,7 +6,7 @@
 /*   By: mmartin- <mmartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 17:32:02 by mmartin-          #+#    #+#             */
-/*   Updated: 2021/01/25 20:48:31 by mmartin-         ###   ########.fr       */
+/*   Updated: 2021/01/26 19:21:02 by mmartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,41 +40,46 @@ static void		ray_specific(t_mat44 const ctw, t_vec3 ray,
 	vec3_normalize(ray, ray);
 }
 
-static t_bool	intersect_plane(t_camera const *cam,
-		t_plane const *plane, t_ray *ray)
+static int		intersect_planes(t_camera const *cam,
+		t_plane const *pl, t_ray *ray)
 {
-	double	det;
 	double	t;
-	t_vec3	planenormal;
-	t_vec3	planeray;
+	t_vec3	v;
 
-	vec3_normalize(planenormal, plane->dir);
-	det = vec3_dot(planenormal, ray->ray);
-	if (det == 0.0f)
+	if (!pl)
 		return (0);
-	vec3_sub(planeray, plane->loc, cam->loc);
-	if ((t = vec3_dot(planeray, plane->dir) / det) < 0)
-		return (0);
-	if (t < ray->dist)
-	{
-		ray->dist = t;
-		ray->color = plane->color;
-	}
-	return (1);
+	vec3_sub(v, pl->loc, cam->loc);
+	t = vec3_dot(v, pl->dir) / vec3_dot(ray->ray, pl->dir);
+	if (t < 0.000001f || t > ray->dist)
+		return (0 + intersect_planes(cam, pl->next, ray));
+	ray->dist = t;
+	ray->color = pl->color;
+	return (1 + intersect_planes(cam, pl->next, ray));
 }
 
-static t_bool	intersect_planes(t_camera const *cam,
-		t_plane const *plane, t_ray *ray)
+static int		intersect_spheres(t_camera const *cam,
+		t_sphere const *sp, t_ray *ray)
 {
-	t_bool	ret;
+	t_vec3	pc;
+	double	ppcr;
+	double	dpc;
+	double	delfin;
+	double	seg;
+	double	t;
 
-	ret = 0;
-	while (plane)
-	{
-		ret |= intersect_plane(cam, plane, ray);
-		plane = plane->next;
-	}
-	return (ret);
+	vec3_sub(pc, sp->loc, cam->loc);
+	ppcr = vec3_dot(pc, ray->ray);
+	dpc = vec3_dot(pc, pc); // squared, sqrt(dpc) == len
+	delfin = dpc - ppcr * ppcr;
+	if (delfin > sp->radius * sp->radius)
+		return (0);
+	seg = sqrt(sp->radius * sp->radius - delfin);
+	t = ppcr - seg < ppcr + seg && ppcr - seg > 0 ? ppcr - seg : ppcr + seg;
+	if (t > ray->dist || t <= 0)
+		return (0);
+	ray->dist = t;
+	ray->color = sp->color;
+	return (1);
 }
 
 void			render_cameras(t_camera const *cam, t_conf const *conf)
@@ -85,7 +90,6 @@ void			render_cameras(t_camera const *cam, t_conf const *conf)
 	unsigned short	y;
 
 	lookat(ctw, cam->loc, cam->dir);
-	ray.dist = INFINITY;
 	ray_generic(ray.holy_vector, &(conf->r), ctw, cam->fov);
 	while (cam)
 	{
@@ -97,11 +101,10 @@ void			render_cameras(t_camera const *cam, t_conf const *conf)
 			{
 				ray.dist = INFINITY;
 				ray_specific(ctw, ray.ray, ray.holy_vector, x, y);
-				if (intersect_planes(cam, conf->pl, &ray))
-				{
+				intersect_planes(cam, conf->pl, &ray);
+				intersect_spheres(cam, conf->sp, &ray);
+				if (ray.dist != INFINITY)
 					*((unsigned int *)((char *) cam->grid + (y * cam->sline + x * (cam->bpp) / 8))) = ray.color;
-					printf("Intersected ray %lf %lf %lf", ray.ray[0], ray.ray[1], ray.ray[2]);
-				}
 				y++;
 			}
 			x++;
