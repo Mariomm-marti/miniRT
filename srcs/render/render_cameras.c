@@ -6,7 +6,7 @@
 /*   By: mmartin- <mmartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 17:32:02 by mmartin-          #+#    #+#             */
-/*   Updated: 2021/01/26 20:47:12 by mmartin-         ###   ########.fr       */
+/*   Updated: 2021/01/27 18:28:49 by mmartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,15 +27,15 @@ static void		ray_generic(t_vec3 g, t_res const *dim,
 	vec3_sub(g, g, t);
 }
 
-static void		ray_specific(t_mat44 const ctw, t_vec3 ray,
-		t_vec3 const holy_vector, unsigned int const x, unsigned int const y)
+static void		ray_specific(t_mat44 const ctw, t_ray *ray,
+		unsigned int const x, unsigned int const y)
 {
-	vec3_mult(ray, (t_vec3){ctw[0][0], ctw[0][1], ctw[0][2]}, x);
-	vec3_add(ray, (t_vec3){-ctw[1][0] * y,
+	vec3_mult(ray->ray, (t_vec3){ctw[0][0], ctw[0][1], ctw[0][2]}, x);
+	vec3_add(ray->ray, (t_vec3){-ctw[1][0] * y,
 			-ctw[1][1] * y,
-			-ctw[1][2] * y}, ray);
-	vec3_add(ray, holy_vector, ray);
-	vec3_normalize(ray, ray);
+			-ctw[1][2] * y}, ray->ray);
+	vec3_add(ray->ray, ray->holy_vector, ray->ray);
+	vec3_normalize(ray->ray, ray->ray);
 }
 
 static int		intersect_planes(t_camera const *cam,
@@ -87,24 +87,18 @@ void			render_cameras(t_camera const *cam, t_conf const *conf)
 
 	lookat(ctw, cam->loc, cam->dir);
 	ray_generic(ray.holy_vector, &(conf->r), ctw, cam->fov);
-	while (cam)
+	while (cam && (x = -1))
 	{
-		x = 0;
-		while (x < conf->r.x)
-		{
-			y = 0;
-			while (y < conf->r.y)
+		while (++x < conf->r.x && (y = -1))
+			while (++y < conf->r.y)
 			{
 				ray.dist = INFINITY;
-				ray_specific(ctw, ray.ray, ray.holy_vector, x, y);
+				ray_specific(ctw, &ray, x, y);
 				intersect_planes(cam, conf->pl, &ray);
 				intersect_spheres(cam, conf->sp, &ray);
 				if (ray.dist != INFINITY)
 					*((unsigned int *)((char *) cam->grid + (y * cam->sline + x * (cam->bpp) / 8))) = ray.color;
-				y++;
 			}
-			x++;
-		}
 		cam = cam->next;
 	}
 }

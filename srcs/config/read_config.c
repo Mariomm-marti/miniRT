@@ -6,17 +6,17 @@
 /*   By: mmartin- <mmartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/30 22:27:34 by mmartin-          #+#    #+#             */
-/*   Updated: 2021/01/24 21:03:33 by mmartin-         ###   ########.fr       */
+/*   Updated: 2021/01/27 18:07:22 by mmartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/config.h"
 #include "../../includes/minirt.h"
-#include <stdio.h> //
 #include <get_next_line.h>
 #include <stdlib.h>
 #include <fcntl.h>
 #include <unistd.h>
+#include <mlx.h>
 
 static t_res	get_resolution(char *str, t_byte *code)
 {
@@ -69,14 +69,14 @@ static t_amb	get_ambient(char *str, t_byte *code)
 	return (amb);
 }
 
-static int		setup_line(t_conf *conf, t_byte *code, char *str, void *mlx_ptr)
+static int		setup_line(t_conf *conf, t_byte *code, char *str)
 {
 	if (*str == 'R')
 		conf->r = get_resolution(str, code);
 	else if (*str == 'A')
 		conf->a = get_ambient(str, code);
 	else if (*str == 'c' && *(str + 1) != 'y')
-		create_camera(conf, str, mlx_ptr);
+		create_camera(conf, str);
 	else if (*str == 'l')
 		create_light(conf, str);
 	else if (*str == 's' && *(str + 1) == 'p')
@@ -94,7 +94,22 @@ static int		setup_line(t_conf *conf, t_byte *code, char *str, void *mlx_ptr)
 	return (1);
 }
 
-// TODO Asegurarme de leer R y A primero porque si no C crea mlximage peque~na
+static void		setup_images(t_conf *conf, void *mlx_ptr)
+{
+	t_camera	*cur;
+	int			end;
+
+	if (!conf->c)
+		create_camera(conf, "c 0,0,0 0,0,1 80");
+	cur = conf->c;
+	while (cur)
+	{
+		cur->img = mlx_new_image(mlx_ptr, conf->r.x, conf->r.y);
+		cur->grid = mlx_get_data_addr(cur->img, &cur->bpp, &cur->sline, &end);
+		cur = cur->next;
+	}
+}
+
 int				read_config(t_conf *conf, char *path, void *mlx_ptr)
 {
 	t_byte		code;
@@ -109,13 +124,14 @@ int				read_config(t_conf *conf, char *path, void *mlx_ptr)
 	code = 0;
 	while (!g_errno && get_next_line(fd, &line) == 1)
 	{
-		if (!setup_line(conf, &code, line, mlx_ptr))
+		if (!setup_line(conf, &code, line))
 			g_errno = CONF_INV_FMT;
 		free(line);
 		line = NULL;
 	}
 	if (line)
 		free(line);
+	setup_images(conf, mlx_ptr);
 	if (code != 3 && !g_errno)
 		g_errno = CONF_MISSING_PARAM;
 	return (!close(fd));

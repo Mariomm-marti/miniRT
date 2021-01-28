@@ -6,7 +6,7 @@
 /*   By: mmartin- <mmartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/04 19:51:06 by mmartin-          #+#    #+#             */
-/*   Updated: 2020/09/04 20:02:46 by mmartin-         ###   ########.fr       */
+/*   Updated: 2021/01/27 18:07:06 by mmartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,12 @@
 #include <string.h>
 #include <stdlib.h>
 
-void	ft_putchar_fd(char c, int fd)
+void					ft_putchar_fd(char c, int fd)
 {
 	write(fd, &c, 1);
 }
 
-void	print_error(unsigned long long int errcod)
+void					print_error(unsigned long long int errcod)
 {
 	char	mask;
 	char	current;
@@ -44,7 +44,7 @@ unsigned long long int	parse_errcode(char *str)
 	return (final);
 }
 
-int		main(int argc, char **argv)
+int						main(int argc, char **argv)
 {
 	char	out[64];
 

@@ -6,7 +6,7 @@
 /*   By: mmartin- <mmartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/31 15:18:44 by mmartin-          #+#    #+#             */
-/*   Updated: 2021/01/25 20:27:23 by mmartin-         ###   ########.fr       */
+/*   Updated: 2021/01/27 16:25:36 by mmartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,14 +35,13 @@ int			main(int argc, char **argv)
 	void	*mlxwin;
 
 	ft_bzero(&conf, sizeof(t_conf));
-	if (!validate_args(argc, argv))
+	if (!validate_args(argc, argv) || !(mlxptr = mlx_init()))
 	{
 		print_error();
 		return (0);
 	}
-	mlxptr = mlx_init();
 	if (!read_config(&conf, *(argv + 1), mlxptr) || g_errno)
- 	{
+	{
 		print_error();
 		terminate_program(&conf, mlxptr);
 	}

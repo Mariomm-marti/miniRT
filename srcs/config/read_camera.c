@@ -6,7 +6,7 @@
 /*   By: mmartin- <mmartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/16 22:18:24 by mmartin-          #+#    #+#             */
-/*   Updated: 2021/01/25 15:54:12 by mmartin-         ###   ########.fr       */
+/*   Updated: 2021/01/27 18:02:59 by mmartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,11 @@
 #include <libft.h>
 #include <mlx.h>
 #include <stdlib.h>
-#include <stdio.h> //
 
-t_camera	*create_camera(t_conf *conf, char *str, void *mlx_ptr)
+t_camera	*create_camera(t_conf *conf, char *str)
 {
 	t_camera	cam;
 	char		**tab;
-	int			endian;
 
 	if (!(tab = ft_split(str, ' ')))
 		return (NULL);
@@ -31,11 +29,9 @@ t_camera	*create_camera(t_conf *conf, char *str, void *mlx_ptr)
 		g_errno = CONF_INV_FMT;
 		return (NULL);
 	}
-	cam.img = mlx_new_image(mlx_ptr, conf->r.x, conf->r.y);
-	cam.grid = (t_color *)mlx_get_data_addr(cam.img,
-					&cam.bpp, &cam.sline, &endian);
 	read_vec(cam.loc, *(tab + 1), 0.0f, 0.0f);
 	read_vec(cam.dir, *(tab + 2), -1.0f, 1.0f);
+	vec3_normalize(cam.dir, cam.dir);
 	if ((cam.fov = read_val(*(tab + 3), 1)) < 0 || cam.fov > 180)
 		g_errno = CONF_INV_NUM;
 	cam.next = conf->c;

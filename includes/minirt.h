@@ -6,7 +6,7 @@
 /*   By: mmartin- <mmartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/01 19:03:31 by mmartin-          #+#    #+#             */
-/*   Updated: 2021/01/25 20:24:10 by mmartin-         ###   ########.fr       */
+/*   Updated: 2021/01/27 17:53:59 by mmartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ typedef struct		s_amb
 typedef struct		s_camera
 {
 	void				*img;
-	t_color				*grid;
+	char				*grid;
 	int					bpp;
 	int					sline;
 	t_vec3				loc;
