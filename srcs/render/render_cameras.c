@@ -6,11 +6,12 @@
 /*   By: mmartin- <mmartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 17:32:02 by mmartin-          #+#    #+#             */
-/*   Updated: 2021/01/27 18:28:49 by mmartin-         ###   ########.fr       */
+/*   Updated: 2021/01/29 20:52:47 by mmartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minirt.h"
+#include <stdio.h> //
 #include <libftmath.h>
 #include <math.h>
 
@@ -78,6 +79,32 @@ static int		intersect_spheres(t_camera const *cam,
 	return (1 + intersect_spheres(cam, sp->next, ray));
 }
 
+static int		intersect_triangles(t_camera const *cam,
+		t_triangle const *tr, t_ray *ray)
+{
+	t_vec3	cross_ac;
+	t_vec3	tuv_vec;
+	double	det;
+	double	tuv_area;
+
+	if (!tr)
+		return (0);
+	vec3_cross(cross_ac, ray->ray, tr->ac);
+	det = vec3_dot(tr->ab, cross_ac);
+	if (fabs(det) < 0.000001f)
+		return (0 + intersect_triangles(cam, tr->next, ray));
+	det = 1 / det;
+	vec3_sub(tuv_vec, tr->a, cam->loc);
+	if ((tuv_area = vec3_dot(tuv_vec, cross_ac) * det) < 0 || tuv_area > 1)
+		return (0 + intersect_triangles(cam, tr->next, ray));
+	vec3_cross(tuv_vec, cross_ac, tr->ab);
+	if ((tuv_area = vec3_dot(ray->ray, tuv_vec) * det) < 0 || tuv_area > 1)
+		return (0 + intersect_triangles(cam, tr->next, ray));
+	if ((tuv_area = vec3_dot(tr->ac, tuv_vec) * det) < ray->dist)
+		return (0 + intersect_triangles(cam, tr->next, ray));
+	return (1 + intersect_triangles(cam, tr->next, ray));
+}
+
 void			render_cameras(t_camera const *cam, t_conf const *conf)
 {
 	t_mat44			ctw;
@@ -96,6 +123,7 @@ void			render_cameras(t_camera const *cam, t_conf const *conf)
 				ray_specific(ctw, &ray, x, y);
 				intersect_planes(cam, conf->pl, &ray);
 				intersect_spheres(cam, conf->sp, &ray);
+				intersect_triangles(cam, conf->tr, &ray);
 				if (ray.dist != INFINITY)
 					*((unsigned int *)((char *) cam->grid + (y * cam->sline + x * (cam->bpp) / 8))) = ray.color;
 			}

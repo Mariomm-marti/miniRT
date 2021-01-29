@@ -6,7 +6,7 @@
 /*   By: mmartin- <mmartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/01 19:03:31 by mmartin-          #+#    #+#             */
-/*   Updated: 2021/01/27 17:53:59 by mmartin-         ###   ########.fr       */
+/*   Updated: 2021/01/29 19:51:22 by mmartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,8 +129,8 @@ typedef struct		s_cylinder
 typedef struct		s_triangle
 {
 	t_vec3				a;
-	t_vec3				b;
-	t_vec3				c;
+	t_vec3				ab;
+	t_vec3				ac;
 	t_color				color;
 	struct s_triangle	*next;
 }					t_triangle;

@@ -6,7 +6,7 @@
 /*   By: mmartin- <mmartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/30 21:56:24 by mmartin-          #+#    #+#             */
-/*   Updated: 2020/12/23 22:45:46 by mmartin-         ###   ########.fr       */
+/*   Updated: 2021/01/29 10:30:34 by mmartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ t_color				read_color(char *str);
 **	Those functions are pretty much descriptive so no comments were added
 */
 
-t_camera			*create_camera(t_conf *conf, char *str, void *mlx_ptr);
+t_camera			*create_camera(t_conf *conf, char *str);
 t_light				*create_light(t_conf *conf, char *str);
 t_sphere			*create_sphere(t_conf *conf, char *str);
 t_plane				*create_plane(t_conf *conf, char *str);
