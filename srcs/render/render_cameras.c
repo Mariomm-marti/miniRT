@@ -6,7 +6,7 @@
 /*   By: mmartin- <mmartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 17:32:02 by mmartin-          #+#    #+#             */
-/*   Updated: 2021/01/29 20:52:47 by mmartin-         ###   ########.fr       */
+/*   Updated: 2021/02/01 20:45:21 by mmartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static void		ray_generic(t_vec3 g, t_res const *dim,
 
 	vec3_mult(g, (t_vec3){ctw[0][0], ctw[0][1], ctw[0][2]}, -dim->x / 2);
 	vec3_mult(t, (t_vec3){ctw[1][0], ctw[1][1], ctw[1][2]}, dim->y / 2);
-	vec3_add(g, t, g);
+	vec3_add(g, g, t);
 	vec3_mult(t, (t_vec3){ctw[2][0], ctw[2][1], ctw[2][2]},
 			dim->y / (2 * tan(fov * DEG_RAD * 0.5)));
 	vec3_sub(g, g, t);
@@ -47,7 +47,7 @@ static int		intersect_planes(t_camera const *cam,
 
 	if (!pl)
 		return (0);
-	vec3_sub(v, pl->loc, cam->loc);
+	vec3_sub(v, cam->loc, pl->loc);
 	t = vec3_dot(v, pl->dir) / vec3_dot(ray->ray, pl->dir);
 	if (t < 0.000001f || t > ray->dist)
 		return (0 + intersect_planes(cam, pl->next, ray));
@@ -65,7 +65,7 @@ static int		intersect_spheres(t_camera const *cam,
 
 	if (!sp)
 		return (0);
-	vec3_sub(pc, sp->loc, cam->loc);
+	vec3_sub(pc, cam->loc, sp->loc);
 	ppcr = vec3_dot(pc, ray->ray);
 	dfn = vec3_dot(pc, pc) - ppcr * ppcr;
 	if (dfn > sp->radius * sp->radius)
@@ -82,26 +82,27 @@ static int		intersect_spheres(t_camera const *cam,
 static int		intersect_triangles(t_camera const *cam,
 		t_triangle const *tr, t_ray *ray)
 {
-	t_vec3	cross_ac;
-	t_vec3	tuv_vec;
+	t_vec3	pv;
+	t_vec3	tv;
+	t_vec3	qv;
 	double	det;
-	double	tuv_area;
 
 	if (!tr)
 		return (0);
-	vec3_cross(cross_ac, ray->ray, tr->ac);
-	det = vec3_dot(tr->ab, cross_ac);
-	if (fabs(det) < 0.000001f)
+	vec3_cross(pv, ray->ray, tr->ac);
+	if (fabs(det = vec3_dot(tr->ab, pv)) < 0.000001f)
 		return (0 + intersect_triangles(cam, tr->next, ray));
 	det = 1 / det;
-	vec3_sub(tuv_vec, tr->a, cam->loc);
-	if ((tuv_area = vec3_dot(tuv_vec, cross_ac) * det) < 0 || tuv_area > 1)
+	vec3_sub(tv, tr->a, cam->loc);
+	if ((pv[0] = vec3_dot(tv, pv) * det) < 0.0f || pv[0] > 1.0f)
 		return (0 + intersect_triangles(cam, tr->next, ray));
-	vec3_cross(tuv_vec, cross_ac, tr->ab);
-	if ((tuv_area = vec3_dot(ray->ray, tuv_vec) * det) < 0 || tuv_area > 1)
+	vec3_cross(qv, tv, tr->ab);
+	if ((pv[1] = vec3_dot(ray->ray, qv) * det) < 0.0f || pv[0] + pv[1] > 1.0f)
 		return (0 + intersect_triangles(cam, tr->next, ray));
-	if ((tuv_area = vec3_dot(tr->ac, tuv_vec) * det) < ray->dist)
+	if ((pv[2] = vec3_dot(tr->ac, qv) * det) > ray->dist || pv[2] < 0)
 		return (0 + intersect_triangles(cam, tr->next, ray));
+	ray->dist = pv[2];
+	ray->color = tr->color;
 	return (1 + intersect_triangles(cam, tr->next, ray));
 }
 

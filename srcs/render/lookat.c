@@ -6,7 +6,7 @@
 /*   By: mmartin- <mmartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 18:19:51 by mmartin-          #+#    #+#             */
-/*   Updated: 2021/01/26 19:17:41 by mmartin-         ###   ########.fr       */
+/*   Updated: 2021/02/01 17:33:24 by mmartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ void	lookat(t_mat44 out, t_vec3 const from, t_vec3 const dir)
 	t_vec3	z;
 
 	vec3_normalize(z, dir);
-	vec3_mult(z, z, -1);
 	vec3_cross(x, (t_vec3){0.0f, 1.0f, 0.0f}, z);
 	vec3_cross(y, x, z);
 	out[0][0] = x[0];
