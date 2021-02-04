@@ -6,7 +6,7 @@
 /*   By: mmartin- <mmartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/30 22:27:34 by mmartin-          #+#    #+#             */
-/*   Updated: 2021/01/27 18:07:22 by mmartin-         ###   ########.fr       */
+/*   Updated: 2021/02/04 17:12:18 by mmartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,9 @@ static t_res	get_resolution(char *str, t_byte *code)
 		g_errno = CONF_INV_RES;
 		return ((t_res){0, 0});
 	}
-	if ((res.x = read_val(*(tab + 1), 1)) < 960 || res.x > SCREEN_WIDTH)
+	if ((res.x = read_val(*(tab + 1), 1)) <= 0 || res.x > SCREEN_WIDTH)
 		res.x = SCREEN_WIDTH;
-	if ((res.y = read_val(*(tab + 2), 1)) < 540 || res.y > SCREEN_HEIGHT)
+	if ((res.y = read_val(*(tab + 2), 1)) <= 0 || res.y > SCREEN_HEIGHT)
 		res.y = SCREEN_HEIGHT;
 	ft_split_free(tab);
 	*code = *code | 1;

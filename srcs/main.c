@@ -6,14 +6,39 @@
 /*   By: mmartin- <mmartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/31 15:18:44 by mmartin-          #+#    #+#             */
-/*   Updated: 2021/01/27 16:25:36 by mmartin-         ###   ########.fr       */
+/*   Updated: 2021/02/04 20:02:52 by mmartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minirt.h"
-#include <stdio.h>
+#include "../includes/config.h"
+#include <stdio.h> //
 #include <libft.h>
 #include <mlx.h>
+
+static int	handle_keyp(int const keycode, void *ptr)
+{
+	static int		i = 0;
+	t_handler const	*handler = (t_handler *)ptr;
+
+	if (keycode == KEY_ESC)
+		terminate_program(handler->conf, handler->mlxptr, handler->winptr);
+	if (keycode == KEY_LEFT)
+		mlx_put_image_to_window(handler->mlxptr, handler->winptr,
+				get_camera(handler->conf, --i < 0 ? -i : i)->img, 0, 0);
+	if (keycode == KEY_RIGHT)
+		mlx_put_image_to_window(handler->mlxptr, handler->winptr,
+				get_camera(handler->conf, ++i < 0 ? -i : i)->img, 0, 0);
+	return (0);
+}
+
+static int	handle_x(void *ptr)
+{
+	t_handler const	*handler = (t_handler *)ptr;
+
+	terminate_program(handler->conf, handler->mlxptr, handler->winptr);
+	return (0);
+}
 
 static int	validate_args(int argc, char **argv)
 {
@@ -31,24 +56,28 @@ static int	validate_args(int argc, char **argv)
 int			main(int argc, char **argv)
 {
 	t_conf	conf;
-	void	*mlxptr;
-	void	*mlxwin;
+	void	*mlxp;
+	void	*winp;
 
 	ft_bzero(&conf, sizeof(t_conf));
-	if (!validate_args(argc, argv) || !(mlxptr = mlx_init()))
+	if (!(mlxp = mlx_init()) || !validate_args(argc, argv) ||
+			!read_config(&conf, *(argv + 1), mlxp) || g_errno)
 	{
 		print_error();
-		return (0);
+		terminate_program(&conf, mlxp, NULL);
 	}
-	if (!read_config(&conf, *(argv + 1), mlxptr) || g_errno)
-	{
-		print_error();
-		terminate_program(&conf, mlxptr);
-	}
-	if (!(mlxwin = mlx_new_window(mlxptr, conf.r.x, conf.r.y, "miniRT")))
-		terminate_program(&conf, mlxptr);
 	render_cameras(conf.c, &conf);
-	mlx_put_image_to_window(mlxptr, mlxwin, conf.c->img, 0, 0);
-	mlx_loop(mlxptr);
-	terminate_program(&conf, mlxptr);
+	if (argc == 2)
+	{
+		if (!(winp = mlx_new_window(mlxp, conf.r.x, conf.r.y, "miniRT")))
+			terminate_program(&conf, mlxp, NULL);
+		mlx_put_image_to_window(mlxp, winp, conf.c->img, 0, 0);
+		mlx_key_hook(winp, &handle_keyp, &(t_handler){&conf, mlxp, winp});
+		mlx_hook(winp, 17, 0L, &handle_x, &(t_handler){&conf, mlxp, winp});
+		mlx_loop(mlxp);
+	}
+	bmp_save(conf.r, conf.c, "screenshot.bmp");
+	if (g_errno)
+		print_error();
+	terminate_program(&conf, mlxp, NULL);
 }

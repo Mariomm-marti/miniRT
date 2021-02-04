@@ -6,7 +6,7 @@
 /*   By: mmartin- <mmartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/01 19:03:31 by mmartin-          #+#    #+#             */
-/*   Updated: 2021/01/29 19:51:22 by mmartin-         ###   ########.fr       */
+/*   Updated: 2021/02/04 19:58:15 by mmartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,11 @@
 # endif
 
 # ifndef DEG_RAD
-#  define DEG_RAD 0.017453292519943295f
+#  define DEG_RAD 0.01745329251994329576923690768488612713442871888541725456097f
+# endif
+
+# ifndef SQRT2
+#  define SQRT2 1.4142135623730950488016887242096980785696718753769480731766797f
 # endif
 
 # include <libft.h>
@@ -34,7 +38,9 @@ typedef unsigned char			t_bool;
 
 enum							e_keycodes
 {
-	KEY_ESC = 53
+	KEY_ESC = 53,
+	KEY_LEFT = 123,
+	KEY_RIGHT = 124
 };
 
 enum							e_errcodes
@@ -56,7 +62,8 @@ enum							e_errcodes
 	CONF_INV_TRIANGLE = 0xDEE36C4126E92ULL,
 	EXEC_INV_ARG = 0x4AAED8824D8647ULL,
 	EXEC_INV_FNAME = 0x955DB1049B705A5ULL,
-	EXEC_INTERNAL_MLX = 0xD66365949F2ULL
+	EXEC_INTERNAL_MLX = 0xD66365949F2ULL,
+	BMP_INV_OPEN = 0x1361B1049B7C0AEULL
 };
 
 typedef struct		s_res
@@ -120,7 +127,7 @@ typedef struct		s_cylinder
 {
 	t_vec3				loc;
 	t_vec3				dir;
-	double				diameter;
+	double				radius;
 	double				height;
 	t_color				color;
 	struct s_cylinder	*next;
@@ -156,12 +163,22 @@ typedef struct		s_ray
 	t_color				color;
 }					t_ray;
 
+typedef struct		s_handler
+{
+	struct s_conf		*conf;
+	void				*mlxptr;
+	void				*winptr;
+}					t_handler;
+
 t_errcode			g_errno;
 
+int					bmp_save(t_res resolution,
+							t_camera const *cam, char const *p);
 void				print_error();
 
 int					read_config(t_conf *conf, char *path, void *mlx_ptr);
-void				terminate_program(t_conf *conf, void *mlx_ptr);
+void				terminate_program(t_conf *conf,
+							void *mlx_ptr, void *mlx_win);
 
 void				lookat(t_mat44 out, t_vec3 const from, t_vec3 const to);
 void				render_cameras(t_camera const *cam, t_conf const *conf);

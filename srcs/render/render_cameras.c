@@ -6,12 +6,11 @@
 /*   By: mmartin- <mmartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 17:32:02 by mmartin-          #+#    #+#             */
-/*   Updated: 2021/02/01 20:45:21 by mmartin-         ###   ########.fr       */
+/*   Updated: 2021/02/04 20:02:19 by mmartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minirt.h"
-#include <stdio.h> //
 #include <libftmath.h>
 #include <math.h>
 
@@ -42,8 +41,8 @@ static void		ray_specific(t_mat44 const ctw, t_ray *ray,
 static int		intersect_planes(t_camera const *cam,
 		t_plane const *pl, t_ray *ray)
 {
-	double	t;
 	t_vec3	v;
+	double	t;
 
 	if (!pl)
 		return (0);
@@ -113,10 +112,10 @@ void			render_cameras(t_camera const *cam, t_conf const *conf)
 	unsigned short	x;
 	unsigned short	y;
 
-	lookat(ctw, cam->loc, cam->dir);
-	ray_generic(ray.holy_vector, &(conf->r), ctw, cam->fov);
 	while (cam && (x = -1))
 	{
+		lookat(ctw, cam->loc, cam->dir);
+		ray_generic(ray.holy_vector, &(conf->r), ctw, cam->fov);
 		while (++x < conf->r.x && (y = -1))
 			while (++y < conf->r.y)
 			{
@@ -126,7 +125,8 @@ void			render_cameras(t_camera const *cam, t_conf const *conf)
 				intersect_spheres(cam, conf->sp, &ray);
 				intersect_triangles(cam, conf->tr, &ray);
 				if (ray.dist != INFINITY)
-					*((unsigned int *)((char *) cam->grid + (y * cam->sline + x * (cam->bpp) / 8))) = ray.color;
+					*((unsigned int *)((char *)cam->grid + (y * cam->sline +
+									x * (cam->bpp) / 8))) = ray.color;
 			}
 		cam = cam->next;
 	}

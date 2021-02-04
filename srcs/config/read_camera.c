@@ -6,7 +6,7 @@
 /*   By: mmartin- <mmartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/16 22:18:24 by mmartin-          #+#    #+#             */
-/*   Updated: 2021/01/27 18:02:59 by mmartin-         ###   ########.fr       */
+/*   Updated: 2021/02/03 17:57:11 by mmartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,8 @@ t_camera	*get_camera(t_conf *conf, size_t index)
 	ret = conf->c;
 	while (count <= index && ret)
 	{
-		ret = ret->next;
+		if (!(ret = ret->next))
+			ret = conf->c;
 		count++;
 	}
 	return (ret);

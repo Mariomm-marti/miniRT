@@ -6,7 +6,7 @@
 /*   By: mmartin- <mmartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/30 20:33:38 by mmartin-          #+#    #+#             */
-/*   Updated: 2021/01/26 20:09:52 by mmartin-         ###   ########.fr       */
+/*   Updated: 2021/02/03 11:43:27 by mmartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,9 @@ t_cylinder	*create_cylinder(t_conf *conf, char *str)
 	read_vec(cyl.loc, *(tab + 1), 0.0f, 0.0f);
 	read_vec(cyl.dir, *(tab + 2), -1.0f, 1.0f);
 	vec3_normalize(cyl.dir, cyl.dir);
-	if ((cyl.diameter = read_val(*(tab + 3), 0)) < 0.1f)
+	if ((cyl.radius = read_val(*(tab + 3), 0)) < 0.1f)
 		g_errno = CONF_INV_NUM;
+	cyl.radius = cyl.radius / 2;
 	if ((cyl.height = read_val(*(tab + 4), 0)) < 0.1f)
 		g_errno = CONF_INV_NUM;
 	cyl.color = read_color(*(tab + 5));

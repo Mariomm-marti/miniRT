@@ -6,7 +6,7 @@
 #    By: mmartin- <mmartin-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/01/10 15:21:05 by mmartin-          #+#    #+#              #
-#    Updated: 2021/01/24 20:55:33 by mmartin-         ###   ########.fr        #
+#    Updated: 2021/02/03 18:39:55 by mmartin-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,8 +21,8 @@ MINIRT_NAME	= miniRT
 MINIRT_LIBFT:= $(addprefix $(MINIRT_OUT),"/srcs/libft")
 MINIRT_GNL	:= $(addprefix $(MINIRT_OUT),"/srcs/get_next_line")
 MINIRT_FTPTF:= $(addprefix $(MINIRT_OUT),"/srcs/ft_printf")
-SCREEN_WIDTH = 2560
-SCREEN_HEIGHT = 1440
+SCREEN_WIDTH := $(shell osascript -e 'tell application "Finder" to get bounds of window of desktop' | grep -E "(\d{2,5})" -o | xargs | cut -d" " -f1)
+SCREEN_HEIGHT := $(shell osascript -e 'tell application "Finder" to get bounds of window of desktop' | grep -E "(\d{2,5})" -o | xargs | cut -d" " -f2)
 
 %.o : %.c
 					@printf "  \x1b[40m\x1b[38;2;16;19;33m\x1b[40m\x1b[01;37m     miniRT \x1b[0m\x1b[30m\x1b[0m\x1b[0;90m Compiling \x1b[0;30m$@...                \x1b[0m\r"
@@ -40,7 +40,7 @@ $(MINIRT_NAME):	depends $(MINIRT_OBJS)
 						-o $(MINIRT_OUT)/$(MINIRT_NAME) -O3 -march=skylake
 					$(call MINIRT_MSG,"Finished compiling project!")
 
-depends:				
+depends:
 					$(call MINIRT_MSG,"Attempting to compile required dependencies...")
 					@(test ! -f $(MINIRT_OUT)/libft.a && make -s -C $(MINIRT_LIBFT) math LIBFT_OUT=$(MINIRT_OUT)) || true
 					@(test ! -f $(MINIRT_OUT)/libgnl.a && make -s -C $(MINIRT_GNL) GNL_OUT=$(MINIRT_OUT)) || true

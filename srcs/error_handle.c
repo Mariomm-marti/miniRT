@@ -6,12 +6,13 @@
 /*   By: mmartin- <mmartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/02 17:37:33 by mmartin-          #+#    #+#             */
-/*   Updated: 2021/01/24 18:39:12 by mmartin-         ###   ########.fr       */
+/*   Updated: 2021/02/03 16:32:47 by mmartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <libft.h>
 #include <stdlib.h>
+#include <mlx.h>
 #include "../includes/minirt.h"
 #include "../includes/config.h"
 
@@ -61,10 +62,12 @@ void	print_error(void)
 **		None
 */
 
-void	terminate_program(t_conf *conf, void *mlx_ptr)
+void	terminate_program(t_conf *conf, void *mlx_ptr, void *mlx_win)
 {
 	if (!conf || !mlx_ptr)
 		exit(!!g_errno);
+	if (mlx_win)
+		mlx_destroy_window(mlx_ptr, mlx_win);
 	free_cameras(conf, mlx_ptr);
 	free_lights(conf);
 	free_spheres(conf);
