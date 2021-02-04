@@ -6,7 +6,7 @@
 /*   By: mmartin- <mmartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/01 19:03:31 by mmartin-          #+#    #+#             */
-/*   Updated: 2021/02/04 19:58:15 by mmartin-         ###   ########.fr       */
+/*   Updated: 2021/02/04 23:51:31 by mmartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,7 +172,7 @@ typedef struct		s_handler
 
 t_errcode			g_errno;
 
-int					bmp_save(t_res resolution,
+int					bmp_save(t_res const res,
 							t_camera const *cam, char const *p);
 void				print_error();
 
