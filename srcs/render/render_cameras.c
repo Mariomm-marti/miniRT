@@ -6,11 +6,12 @@
 /*   By: mmartin- <mmartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 17:32:02 by mmartin-          #+#    #+#             */
-/*   Updated: 2021/02/04 20:02:19 by mmartin-         ###   ########.fr       */
+/*   Updated: 2021/02/05 20:52:20 by mmartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minirt.h"
+#include <stdio.h> //
 #include <libftmath.h>
 #include <math.h>
 
@@ -105,6 +106,48 @@ static int		intersect_triangles(t_camera const *cam,
 	return (1 + intersect_triangles(cam, tr->next, ray));
 }
 
+static void		solve_quadratic(double const a, double const b,
+		double const c, t_vec3 out)
+{
+	double	inv;
+	double	resqrt;
+	double	first;
+	double	second;
+
+	inv = 1 / (2 * a);
+	resqrt = sqrt(b * b - 4 * a * c);
+	first = (-b + resqrt) * inv;
+	second = (-b - resqrt) * inv;
+	out[0] = first < second ? first : second;
+	out[1] = first;
+	out[2] = second;
+}
+
+static int		intersect_cylinders(t_camera const *cam,
+		t_cylinder const *cy, t_ray *ray)
+{
+	t_vec3	co;
+	t_vec3	aside;
+	t_vec3	bside;
+
+	if (!cy)
+		return (0);
+	vec3_mult(aside, cy->dir, vec3_dot(ray->ray, cy->dir));
+	vec3_sub(aside, ray->ray, aside);
+	vec3_sub(co, cam->loc, cy->loc);
+	vec3_mult(bside, cy->dir, vec3_dot(co, cy->dir));
+	vec3_sub(bside, co, bside);
+	co[0] = vec3_dot(aside, aside);
+	co[1] = 2 * vec3_dot(aside, bside);
+	co[2] = vec3_dot(bside, bside) - cy->radius * cy->radius;
+	solve_quadratic(co[0], -co[1], co[2], co);
+	if (isnan(co[0]) || co[0] < 0 || co[0] > ray->dist)
+		return (0 + intersect_cylinders(cam, cy->next, ray));
+	ray->dist = co[0];
+	ray->color = cy->color;
+	return (1 + intersect_cylinders(cam, cy->next, ray));
+}
+
 void			render_cameras(t_camera const *cam, t_conf const *conf)
 {
 	t_mat44			ctw;
@@ -124,6 +167,7 @@ void			render_cameras(t_camera const *cam, t_conf const *conf)
 				intersect_planes(cam, conf->pl, &ray);
 				intersect_spheres(cam, conf->sp, &ray);
 				intersect_triangles(cam, conf->tr, &ray);
+				intersect_cylinders(cam, conf->cy, &ray);
 				if (ray.dist != INFINITY)
 					*((unsigned int *)((char *)cam->grid + (y * cam->sline +
 									x * (cam->bpp) / 8))) = ray.color;

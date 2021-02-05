@@ -6,7 +6,7 @@
 /*   By: mmartin- <mmartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/01 19:03:31 by mmartin-          #+#    #+#             */
-/*   Updated: 2021/02/04 23:51:31 by mmartin-         ###   ########.fr       */
+/*   Updated: 2021/02/05 16:04:40 by mmartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,7 @@ typedef struct		s_square
 {
 	t_vec3				loc;
 	t_vec3				dir;
-	double				side_size;
+	double				radius;
 	t_color				color;
 	struct s_square		*next;
 }					t_square;
@@ -172,8 +172,6 @@ typedef struct		s_handler
 
 t_errcode			g_errno;
 
-int					bmp_save(t_res const res,
-							t_camera const *cam, char const *p);
 void				print_error();
 
 int					read_config(t_conf *conf, char *path, void *mlx_ptr);
