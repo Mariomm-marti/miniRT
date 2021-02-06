@@ -6,7 +6,7 @@
 /*   By: mmartin- <mmartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/30 21:56:24 by mmartin-          #+#    #+#             */
-/*   Updated: 2021/01/29 10:30:34 by mmartin-         ###   ########.fr       */
+/*   Updated: 2021/02/06 16:04:39 by mmartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,9 @@ t_camera			*create_camera(t_conf *conf, char *str);
 t_light				*create_light(t_conf *conf, char *str);
 t_sphere			*create_sphere(t_conf *conf, char *str);
 t_plane				*create_plane(t_conf *conf, char *str);
-t_square			*create_square(t_conf *conf, char *str);
 t_cylinder			*create_cylinder(t_conf *conf, char *str);
 t_triangle			*create_triangle(t_conf *conf, char *str);
+void				create_square(t_conf *conf, char *str);
 
 /*
 **	Allows fetching element at index, returns NULL if element is out of bounds

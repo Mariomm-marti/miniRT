@@ -6,7 +6,7 @@
 /*   By: mmartin- <mmartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/31 15:18:44 by mmartin-          #+#    #+#             */
-/*   Updated: 2021/02/05 13:03:14 by mmartin-         ###   ########.fr       */
+/*   Updated: 2021/02/06 17:43:45 by mmartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ static int	bmp_save(t_res const res, t_camera const *cam, char const *p)
 	t = 0x200001ULL;
 	ft_memcpy(buff + 26, &t, 4);
 	write(fd, buff, 54);
-	padding = (cam->bpp - cam->sline % (cam->bpp / 8)) % (cam->bpp / 8);
+	padding = ((cam->bpp / 8) - cam->sline % (cam->bpp / 8)) % (cam->bpp / 8);
 	t = res.y;
 	while (--t >= 0)
 	{

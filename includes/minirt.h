@@ -6,7 +6,7 @@
 /*   By: mmartin- <mmartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/01 19:03:31 by mmartin-          #+#    #+#             */
-/*   Updated: 2021/02/05 16:04:40 by mmartin-         ###   ########.fr       */
+/*   Updated: 2021/02/06 13:42:58 by mmartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,6 @@ typedef struct		s_square
 	t_vec3				dir;
 	double				radius;
 	t_color				color;
-	struct s_square		*next;
 }					t_square;
 
 typedef struct		s_cylinder
@@ -150,7 +149,6 @@ typedef struct		s_conf
 	struct s_light		*l;
 	struct s_sphere		*sp;
 	struct s_plane		*pl;
-	struct s_square		*sq;
 	struct s_cylinder	*cy;
 	struct s_triangle	*tr;
 }					t_conf;

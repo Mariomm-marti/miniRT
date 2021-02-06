@@ -6,15 +6,15 @@
 /*   By: mmartin- <mmartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/02 17:37:33 by mmartin-          #+#    #+#             */
-/*   Updated: 2021/02/03 16:32:47 by mmartin-         ###   ########.fr       */
+/*   Updated: 2021/02/06 17:31:30 by mmartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../includes/minirt.h"
+#include "../includes/config.h"
 #include <libft.h>
 #include <stdlib.h>
 #include <mlx.h>
-#include "../includes/minirt.h"
-#include "../includes/config.h"
 
 /*
 **	DESCRIPTION
@@ -72,7 +72,6 @@ void	terminate_program(t_conf *conf, void *mlx_ptr, void *mlx_win)
 	free_lights(conf);
 	free_spheres(conf);
 	free_planes(conf);
-	free_squares(conf);
 	free_cylinders(conf);
 	free_triangles(conf);
 	// TODO remove it

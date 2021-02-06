@@ -6,12 +6,11 @@
 /*   By: mmartin- <mmartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 17:32:02 by mmartin-          #+#    #+#             */
-/*   Updated: 2021/02/05 20:52:20 by mmartin-         ###   ########.fr       */
+/*   Updated: 2021/02/06 17:29:31 by mmartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minirt.h"
-#include <stdio.h> //
 #include <libftmath.h>
 #include <math.h>
 
@@ -142,6 +141,14 @@ static int		intersect_cylinders(t_camera const *cam,
 	co[2] = vec3_dot(bside, bside) - cy->radius * cy->radius;
 	solve_quadratic(co[0], -co[1], co[2], co);
 	if (isnan(co[0]) || co[0] < 0 || co[0] > ray->dist)
+		return (0 + intersect_cylinders(cam, cy->next, ray));
+	vec3_mult(aside, ray->ray, -co[0]);
+	vec3_add(aside, cam->loc, aside);
+	vec3_mult(bside, cy->dir, cy->height);
+	vec3_add(bside, bside, cy->loc);
+	vec3_sub(bside, aside, bside);
+	vec3_sub(aside, aside, cy->loc);
+	if (vec3_dot(cy->dir, aside) < 0 || vec3_dot(cy->dir, bside) > 0)
 		return (0 + intersect_cylinders(cam, cy->next, ray));
 	ray->dist = co[0];
 	ray->color = cy->color;
