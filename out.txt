@@ -1,0 +1,20 @@
+Process:         miniRT [52305]
+Path:            /Volumes/*/miniRT
+Load Address:    0x10a853000
+Identifier:      miniRT
+Version:         ???
+Code Type:       X86-64
+Parent Process:  zsh [75229]
+
+Date/Time:       2021-02-08 20:53:16.304 +0100
+Launch Time:     2021-02-08 20:53:14.389 +0100
+OS Version:      Mac OS X 10.14.5 (18F132)
+Report Version:  7
+Analysis Tool:   /Applications/Xcode.app/Contents/Developer/usr/bin/leaks
+Analysis Tool Version:  Xcode 10.2.1 (10E1001)
+----
+
+leaks Report Version: 4.0
+Process 52305: 20591 nodes malloced for 9591 KB
+Process 52305: 0 leaks for 0 total leaked bytes.
+

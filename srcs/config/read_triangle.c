@@ -6,7 +6,7 @@
 /*   By: mmartin- <mmartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/30 21:27:48 by mmartin-          #+#    #+#             */
-/*   Updated: 2021/02/01 17:33:41 by mmartin-         ###   ########.fr       */
+/*   Updated: 2021/02/08 18:54:17 by mmartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ t_triangle	*create_triangle(t_conf *conf, char *str)
 	read_vec(tr.ac, *(tab + 3), 0.0f, 0.0f);
 	vec3_sub(tr.ab, tr.a, tr.ab);
 	vec3_sub(tr.ac, tr.a, tr.ac);
+	vec3_cross(tr.normal, tr.ab, tr.ac);
 	tr.color = read_color(*(tab + 4));
 	tr.next = conf->tr;
 	conf->tr = ft_memdup(&tr, sizeof(t_triangle));

@@ -6,7 +6,7 @@
 /*   By: mmartin- <mmartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/01 19:03:31 by mmartin-          #+#    #+#             */
-/*   Updated: 2021/02/06 13:42:58 by mmartin-         ###   ########.fr       */
+/*   Updated: 2021/02/08 18:53:50 by mmartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,6 +137,7 @@ typedef struct		s_triangle
 	t_vec3				a;
 	t_vec3				ab;
 	t_vec3				ac;
+	t_vec3				normal;
 	t_color				color;
 	struct s_triangle	*next;
 }					t_triangle;
@@ -157,6 +158,8 @@ typedef struct		s_ray
 {
 	t_vec3				holy_vector;
 	t_vec3				ray;
+	t_vec3				point;
+	t_vec3				normal;
 	double				dist;
 	t_color				color;
 }					t_ray;
