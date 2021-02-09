@@ -6,7 +6,7 @@
 /*   By: mmartin- <mmartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/09 19:49:49 by mmartin-          #+#    #+#             */
-/*   Updated: 2021/02/09 20:15:40 by mmartin-         ###   ########.fr       */
+/*   Updated: 2021/02/09 20:24:48 by mmartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,8 @@ int	intersect_triangles(t_vec3 const loc,
 		return (0 + intersect_triangles(loc, tr->next, ray, max - 1));
 	vec3_mult(ray->normal,
 			tr->normal, vec3_dot(ray->ray, tr->normal) < 0.0f ? -1 : 1);
-	vec3_mult(ray->point, ray->ray, pv[2]);
+	vec3_mult(ray->point, ray->ray, (ray->dist = pv[2]));
 	vec3_add(ray->point, ray->point, loc);
-	ray->dist = pv[2];
 	ray->color = tr->color;
 	return (1 + intersect_triangles(loc, tr->next, ray, max - 1));
 }
