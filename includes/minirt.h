@@ -6,7 +6,7 @@
 /*   By: mmartin- <mmartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/01 19:03:31 by mmartin-          #+#    #+#             */
-/*   Updated: 2021/02/08 18:53:50 by mmartin-         ###   ########.fr       */
+/*   Updated: 2021/02/09 20:08:56 by mmartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,6 +179,16 @@ int					read_config(t_conf *conf, char *path, void *mlx_ptr);
 void				terminate_program(t_conf *conf,
 							void *mlx_ptr, void *mlx_win);
 
+t_color				shadow_ray(t_conf const *conf,
+							t_light const *l, t_ray *ray);
+int					intersect_planes(t_vec3 const loc,
+							t_plane const *pl, t_ray *ray, int max);
+int					intersect_spheres(t_vec3 const loc,
+							t_sphere const *sp, t_ray *ray, int max);
+int					intersect_triangles(t_vec3 const loc,
+							t_triangle const *tr, t_ray *ray, int max);
+int					intersect_cylinders(t_vec3 const loc,
+							t_cylinder const *cy, t_ray *ray, int max);
 void				lookat(t_mat44 out, t_vec3 const from, t_vec3 const to);
 void				render_cameras(t_camera const *cam, t_conf const *conf);
 
