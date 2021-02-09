@@ -6,7 +6,7 @@
 /*   By: mmartin- <mmartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/09 16:16:55 by mmartin-          #+#    #+#             */
-/*   Updated: 2021/02/09 20:11:32 by mmartin-         ###   ########.fr       */
+/*   Updated: 2021/02/09 23:26:00 by mmartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static void		solve_quadratic(double const a, double const b,
 	resqrt = sqrt(b * b - 4 * a * c);
 	first = (-b + resqrt) * inv;
 	second = (-b - resqrt) * inv;
-	out[0] = first < second && first > 0 ? first : second;
+	out[0] = first < second ? first : second;
 	out[1] = first;
 	out[2] = second;
 }
@@ -46,22 +46,33 @@ static void		solve_coefficients(t_vec3 const loc,
 	co[0] = vec3_dot(aside, aside);
 	co[1] = 2 * vec3_dot(aside, bside);
 	co[2] = vec3_dot(bside, bside) - cy->radius * cy->radius;
-	solve_quadratic(co[0], co[1], co[2], co);
 }
 
-static int		resolve_intersection(t_vec3 const loc, t_ray const *ray,
-		t_cylinder const *cy, double const coefficient)
+static int		solve_intersect(t_vec3 const loc, t_cylinder const *cy,
+		t_ray const *ray, t_vec3 const co)
 {
 	t_vec3	aside;
 	t_vec3	bside;
+	t_byte	is_render;
 
-	vec3_mult(aside, ray->ray, coefficient);
+	is_render = 0;
+	vec3_mult(aside, ray->ray, co[1]);
 	vec3_add(aside, loc, aside);
 	vec3_mult(bside, cy->dir, cy->height);
 	vec3_add(bside, bside, cy->loc);
 	vec3_sub(bside, aside, bside);
 	vec3_sub(aside, aside, cy->loc);
-	return (vec3_dot(cy->dir, aside) > 0 && vec3_dot(cy->dir, bside) < 0);
+	if (vec3_dot(cy->dir, aside) > 0 && vec3_dot(cy->dir, bside) < 0)
+		is_render = 1;
+	vec3_mult(aside, ray->ray, co[2]);
+	vec3_add(aside, loc, aside);
+	vec3_mult(bside, cy->dir, cy->height);
+	vec3_add(bside, bside, cy->loc);
+	vec3_sub(bside, aside, bside);
+	vec3_sub(aside, aside, cy->loc);
+	if (vec3_dot(cy->dir, aside) > 0 && vec3_dot(cy->dir, bside) < 0)
+		is_render = 2;
+	return (is_render);
 }
 
 int				intersect_cylinders(t_vec3 const loc,
@@ -72,12 +83,12 @@ int				intersect_cylinders(t_vec3 const loc,
 
 	if (!cy || !max)
 		return (0);
+	is_render = 0;
 	solve_coefficients(loc, cy, ray, co);
+	solve_quadratic(co[0], co[1], co[2], co);
 	if (isnan(co[0]) || co[0] < 0 || co[0] > ray->dist)
 		return (0 + intersect_cylinders(loc, cy->next, ray, max - 1));
-	is_render = resolve_intersection(loc, ray, cy, co[1]);
-	is_render += resolve_intersection(loc, ray, cy, co[2]);
-	if (!is_render)
+	if (!(is_render = solve_intersect(loc, cy, ray, co)))
 		return (0 + intersect_cylinders(loc, cy->next, ray, max - 1));
 	vec3_mult(ray->point, ray->ray, is_render == 1 ? co[1] : co[2]);
 	vec3_add(ray->point, ray->point, loc);
