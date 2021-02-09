@@ -6,7 +6,7 @@
 /*   By: mmartin- <mmartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 18:19:51 by mmartin-          #+#    #+#             */
-/*   Updated: 2021/02/05 12:55:24 by mmartin-         ###   ########.fr       */
+/*   Updated: 2021/02/09 10:51:59 by mmartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,12 @@ void	lookat(t_mat44 out, t_vec3 const from, t_vec3 const dir)
 	t_vec3	z;
 	t_byte	i;
 
-	vec3_normalize(z, dir);
-	if (z[1] != 1.0f && z[1] != -1.0f)
+	vec3_mult(z, dir, -1);
+	vec3_normalize(z, z);
+	if ((i = -1) && z[1] != 1.0f && z[1] != -1.0f)
 	{
 		vec3_cross(x, (t_vec3){0.0f, 1.0f, 0.0f}, z);
-		vec3_cross(y, x, z);
+		vec3_cross(y, z, x);
 	}
 	else
 	{
@@ -33,7 +34,6 @@ void	lookat(t_mat44 out, t_vec3 const from, t_vec3 const dir)
 		ft_memcpy(y, (t_vec3){1.0f, 0.0f, 0.0f}, sizeof(t_vec3));
 		ft_memcpy(z, (t_vec3){0.0f, z[1], 0.0f}, sizeof(t_vec3));
 	}
-	i = -1;
 	while (++i < 4)
 	{
 		out[0][i] = x[i];
