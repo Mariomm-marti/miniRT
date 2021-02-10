@@ -6,7 +6,7 @@
 /*   By: mmartin- <mmartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/09 19:44:21 by mmartin-          #+#    #+#             */
-/*   Updated: 2021/02/09 20:12:57 by mmartin-         ###   ########.fr       */
+/*   Updated: 2021/02/10 20:00:50 by mmartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,9 +58,10 @@ t_color			shadow_ray(t_conf const *conf,
 		intersect_planes(ray->point, conf->pl, &shadow, 1);
 		intersect_spheres(ray->point, conf->sp, &shadow, 1);
 		intersect_triangles(ray->point, conf->tr, &shadow, 1);
+		intersect_cylinders(ray->point, conf->cy, &shadow, 1);
 		if (shadow.dist == INFINITY &&
 				(lamb = vec3_dot(shadow.ray, ray->normal)) >= 0.0f)
-			result = add_color(result, l->color, lamb);
+			result = add_color(result, l->color, lamb * l->ratio);
 		l = l->next;
 	}
 	return (mult_color(result, ray->color, 1.0f));
