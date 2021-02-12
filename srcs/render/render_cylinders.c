@@ -6,7 +6,7 @@
 /*   By: mmartin- <mmartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/09 16:16:55 by mmartin-          #+#    #+#             */
-/*   Updated: 2021/02/10 20:03:05 by mmartin-         ###   ########.fr       */
+/*   Updated: 2021/02/12 17:37:35 by mmartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,8 @@ int				intersect_cylinders(t_vec3 const loc,
 	vec3_add(ray->normal, ray->normal, cy->loc);
 	vec3_sub(ray->normal, ray->point, ray->normal);
 	vec3_normalize(ray->normal, ray->normal);
+	vec3_mult(ray->normal,
+			ray->normal, vec3_dot(ray->ray, ray->normal) < 0.0f ? 1.0f : -1.0f);
 	ray->dist = is_render == 1 ? co[1] : co[2];
 	ray->color = cy->color;
 	return (1 + intersect_cylinders(loc, cy->next, ray, max - 1));

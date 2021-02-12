@@ -6,7 +6,7 @@
 /*   By: mmartin- <mmartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/09 19:44:21 by mmartin-          #+#    #+#             */
-/*   Updated: 2021/02/10 20:00:50 by mmartin-         ###   ########.fr       */
+/*   Updated: 2021/02/12 16:50:53 by mmartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ t_color			shadow_ray(t_conf const *conf,
 	t_vec3		acne;
 	t_color		result;
 	double		lamb;
+	double		d;
 
 	vec3_mult(acne, ray->normal, 0.001f);
 	vec3_add(ray->point, acne, ray->point);
@@ -53,6 +54,7 @@ t_color			shadow_ray(t_conf const *conf,
 	while (l)
 	{
 		vec3_sub(shadow.ray, l->loc, ray->point);
+		d = vec3_dot(shadow.ray, shadow.ray);
 		vec3_normalize(shadow.ray, shadow.ray);
 		shadow.dist = INFINITY;
 		intersect_planes(ray->point, conf->pl, &shadow, 1);
@@ -61,7 +63,7 @@ t_color			shadow_ray(t_conf const *conf,
 		intersect_cylinders(ray->point, conf->cy, &shadow, 1);
 		if (shadow.dist == INFINITY &&
 				(lamb = vec3_dot(shadow.ray, ray->normal)) >= 0.0f)
-			result = add_color(result, l->color, lamb * l->ratio);
+			result = add_color(result, l->color, lamb * l->ratio * 4000 / d);
 		l = l->next;
 	}
 	return (mult_color(result, ray->color, 1.0f));
