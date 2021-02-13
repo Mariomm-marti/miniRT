@@ -6,7 +6,7 @@
 /*   By: mmartin- <mmartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/01 19:03:31 by mmartin-          #+#    #+#             */
-/*   Updated: 2021/02/09 20:08:56 by mmartin-         ###   ########.fr       */
+/*   Updated: 2021/02/12 23:58:35 by mmartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,12 +80,12 @@ typedef struct		s_amb
 
 typedef struct		s_camera
 {
+	t_vec3				loc;
+	t_vec3				dir;
 	void				*img;
 	char				*grid;
 	int					bpp;
 	int					sline;
-	t_vec3				loc;
-	t_vec3				dir;
 	t_byte				fov;
 	struct s_camera		*next;
 }					t_camera;
@@ -167,6 +167,7 @@ typedef struct		s_ray
 typedef struct		s_handler
 {
 	struct s_conf		*conf;
+	int					i;
 	void				*mlxptr;
 	void				*winptr;
 }					t_handler;
