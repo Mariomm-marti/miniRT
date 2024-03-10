@@ -1,4 +1,4 @@
-# miniRT - 42 fifth project
+# miniRT
 This project introduces the following topics:
 - Intermediate raytracing protocol implementation (visibility part)
 - Image saving in a non-compressed format (BMP)
